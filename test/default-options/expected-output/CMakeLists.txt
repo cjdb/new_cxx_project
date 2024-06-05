@@ -18,6 +18,7 @@ enable_testing()
 include(CTest)
 
 add_subdirectory(source)
+add_subdirectory(docs)
 
 # This file is deliberately included after everything else, since installation targets depend on at
 # least one target requesting to be installed first.

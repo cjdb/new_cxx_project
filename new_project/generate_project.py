@@ -23,6 +23,7 @@ def generate(path: Path, author: str, std: str):
                    path=path,
                    std=std[-2:],
                    extensions_enabled=std[0] == 'g')
+    generate_docs(project_name=project_name, path=path)
 
     import_templates.substitute(
         template='README.md',
@@ -81,6 +82,18 @@ def generate_cmake(project_name: str, path: Path, std: int,
         replace={
             'cxx_standard': std,
             'extensions': 'Yes' if extensions_enabled else 'No',
+            'PROJECT_NAME': project_name.upper(),
+        },
+    )
+
+
+def generate_docs(project_name: str, path: Path):
+    os.makedirs(f'{path}/docs', exist_ok=True)
+
+    import_templates.substitute(
+        template='docs/CMakeLists.txt',
+        prefix=path,
+        replace={
             'PROJECT_NAME': project_name.upper(),
         },
     )

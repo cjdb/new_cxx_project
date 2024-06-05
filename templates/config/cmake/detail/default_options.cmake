@@ -22,3 +22,12 @@ else()
   message(FATAL_ERROR "CMAKE_BUILD_TYPE must be set")
 endif()
 message(STATUS "Build type: $${CMAKE_BUILD_TYPE}")
+
+set(
+  # Variable
+  ${PROJECT_NAME}_BUILD_DOCS
+  # Default value
+  Yes
+  CACHE STRING
+  "Toggles whether the documentation is built. Requires both Sphinx and MyST to be installed first."
+)
