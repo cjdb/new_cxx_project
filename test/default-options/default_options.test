@@ -1,0 +1,52 @@
+RUN: %rm %t/default_options
+RUN: %new-project %t/default_options --author='new-c++-project Test Suite'
+
+RUN: diff --unified --color --recursive %S/expected-output %t/default_options
+
+RUN: %rm %t/build
+RUN: cmake -S %t/default_options -B %t/build -GNinja -DCMAKE_BUILD_TYPE=Debug 2>&1 | FileCheck %s --check-prefixes=CHECK-CMAKE,CHECK-CMAKE-DEBUG --match-full-lines
+RUN: ninja -C %t/build 2>&1 | FileCheck %s --check-prefixes=CHECK-NINJA --match-full-lines
+
+RUN: %rm %t/build
+RUN: cmake -S %t/default_options -B %t/build -GNinja -DCMAKE_BUILD_TYPE=Release 2>&1 | FileCheck %s --check-prefixes=CHECK-CMAKE,CHECK-CMAKE-RELEASE --match-full-lines
+RUN: ninja -C %t/build 2>&1 | FileCheck %s --check-prefixes=CHECK-NINJA --match-full-lines
+
+RUN: %rm %t/build
+RUN: cmake -S %t/default_options -B %t/build -GNinja -DCMAKE_BUILD_TYPE=MinSizeRel 2>&1 | FileCheck %s --check-prefixes=CHECK-CMAKE,CHECK-CMAKE-MINSIZEREL --match-full-lines
+RUN: ninja -C %t/build 2>&1 | FileCheck %s --check-prefixes=CHECK-NINJA --match-full-lines
+
+RUN: %rm %t/build
+RUN: cmake -S %t/default_options -B %t/build -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo 2>&1 | FileCheck %s --check-prefixes=CHECK-CMAKE,CHECK-CMAKE-RELWITHDEBINFO --match-full-lines
+RUN: ninja -C %t/build 2>&1 | FileCheck %s --check-prefixes=CHECK-NINJA --match-full-lines
+
+CHECK-CMAKE:                     -- The C compiler identification is {{(GNU|Clang) ([0-9.]+)}}
+CHECK-CMAKE-NEXT:                -- The CXX compiler identification is {{(GNU|Clang) ([0-9.]+)}}
+CHECK-CMAKE-NEXT:                -- Detecting C compiler ABI info
+CHECK-CMAKE-NEXT:                -- Detecting C compiler ABI info - done
+CHECK-CMAKE-NEXT:                -- Check for working C compiler: {{.*}}
+CHECK-CMAKE-NEXT:                -- Detecting C compile features
+CHECK-CMAKE-NEXT:                -- Detecting C compile features - done
+CHECK-CMAKE-NEXT:                -- Detecting CXX compiler ABI info
+CHECK-CMAKE-NEXT:                -- Detecting CXX compiler ABI info - done
+CHECK-CMAKE-NEXT:                -- Check for working CXX compiler: {{.*}}
+CHECK-CMAKE-NEXT:                -- Detecting CXX compile features
+CHECK-CMAKE-NEXT:                -- Detecting CXX compile features - done
+CHECK-CMAKE-NEXT:                -- Building with C++23 (extensions enabled)
+CHECK-CMAKE-DEBUG-NEXT:          -- Build type: Debug
+CHECK-CMAKE-RELEASE-NEXT:        -- Build type: Release
+CHECK-CMAKE-MINSIZEREL-NEXT:     -- Build type: MinSizeRel
+CHECK-CMAKE-RELWITHDEBINFO-NEXT: -- Build type: RelWithDebInfo
+CHECK-CMAKE-NEXT:                CMake Warning (dev) at config/cmake/install_targets.cmake:{{[0-9]+}} (message):
+CHECK-CMAKE-NEXT:                  no installation targets have been declared (please modify
+CHECK-CMAKE-NEXT:                  {{.*/test/default-options/Output/default_options.test.tmp/default_options/config/cmake/install_targets.cmake}}
+CHECK-CMAKE-NEXT:                  to rectify this)
+CHECK-CMAKE-NEXT:                Call Stack (most recent call first):
+CHECK-CMAKE-NEXT:                  CMakeLists.txt:{{[0-9]+}} (include)
+CHECK-CMAKE-NEXT:                This warning is for project developers.  Use -Wno-dev to suppress it.
+CHECK-CMAKE-EMPTY:
+CHECK-CMAKE-NEXT:                -- Configuring done ({{[0-9.]+s}})
+CHECK-CMAKE-NEXT:                -- Generating done ({{[0-9.]+s}})
+CHECK-CMAKE-NEXT:                -- Build files have been written to: {{.*/test/default-options/Output/default_options.test.tmp/build}}
+
+CHECK-NINJA: ninja: Entering directory `{{.*/test/default-options/Output/default_options.test.tmp/build}}'
+CHECK-NINJA: ninja: no work to do.
