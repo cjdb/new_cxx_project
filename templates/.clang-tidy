@@ -1,0 +1,87 @@
+Checks: 'abseil-*,
+         boost-*,
+         bugprone-*,
+         -bugprone-exception-escape,
+         cert-*,
+         -cert-dcl21-cpp,
+         -cert-msc32-c,
+         -cert-msc51-cpp,
+         clang-analyzer-*,
+         clang-diagnostic-*,
+         cppcoreguildelines-*,
+         google-*,
+         -google-runtime-int,
+         -google-runtime-references,
+         misc-*,
+         -misc-no-recursion,
+         -misc-non-private-member-variables-in-classes,
+         modernize-*,
+         -modernize-use-trailing-return-type,
+         performance-*,
+         portability-*,
+         -portability-simd-intrinsics,
+         readability-*,
+         -readability-function-size,
+         -readability-function-cognitive-complexity,
+         -readability-named-parameter,
+         -readability-qualified-auto,
+         -readability-identifier-length'
+WarningsAsErrors: '*'
+
+CheckOptions:
+  - key: bugprone-dangling-handle.HandleClasses
+    value: 'std::basic_string_view;std::span;std::ranges::subrange;std::ranges::all_view;std::ranges::common_view;std::ranges::keys_view;std::ranges::values_view'
+  - key: bugprone-exception-escape.FunctionsThatShouldNotThrow
+    value: 'iter_move,iter_swap'
+  - key: readability-simplify-boolean-expr.ChainedConditionalReturn
+    value: '1'
+  - key: readability-simplify-boolean-expr.ChainedConditionalAssignment
+    value: '1'
+  - key: readability-simplify-subscript-expr.Types
+    value: 'std::array;std::basic_string;std::basic_string_view;std::span;std::vector'
+
+  # For the full list, see https://clang.llvm.org/extra/clang-tidy/checks/readability/identifier-naming.html.
+  - key: readability-identifier-naming.ClassCase
+    value: "lower_case"
+  - key: readability-identifier-naming.ClassMemberSuffix
+    value: "_"
+  - key: readability-identifier-naming.ConceptCase
+    value: "lower_case"
+  - key: readability-identifier-naming.ConstantCase
+    value: "lower_case"
+  - key: readability-identifier-naming.ConstantMemberCase
+    value: "lower_case"
+  - key: readability-identifier-naming.ConstexprVariableCase
+    value: "lower_case"
+  - key: readability-identifier-naming.EnumCase
+    value: "lower_case"
+  - key: readability-identifier-naming.EnumConstantCase
+    value: "lower_case"
+  - key: readability-identifier-naming.FunctionCase
+    value: "lower_case"
+  - key: readability-identifier-naming.GlobalCase
+    value: "lower_case"
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: "UPPER_CASE"
+  - key: readability-identifier-naming.MacroDefinitionPrefix
+    value: "${PROJECT_NAME}_"
+  - key: readability-identifier-naming.MemberCase
+    value: "lower_case"
+  - key: readability-identifier-naming.MethodCase
+    value: "lower_case"
+  - key: readability-identifier-naming.NamespaceCase
+    value: "lower_case"
+  - key: readability-identifier-naming.ParameterCase
+    value: "lower_case"
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: "_"
+  - key: readability-identifier-naming.PrivateMethodCase
+    value: "lower_case"
+  - key: readability-identifier-naming.PublicMemberCase
+    value: "lower_case"
+  - key: readability-identifier-naming.PublicMethodCase
+    value: "lower_case"
+  - key: readability-identifier-naming.TypeAliasCase
+    value: "lower_case"
+  - key: readability-identifier-naming.VariableCase
+    value: "lower_case"

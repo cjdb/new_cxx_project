@@ -47,6 +47,23 @@ def generate(path: Path, author: str, std: str):
             'project_name': project_name,
         },
     )
+    import_templates.substitute(
+        template='.clang-format',
+        prefix=path,
+        replace={},
+    )
+    import_templates.substitute(
+        template='.clang-tidy',
+        prefix=path,
+        replace={
+            'PROJECT_NAME': project_name.upper(),
+        },
+    )
+    import_templates.substitute(
+        template='.clangd',
+        prefix=path,
+        replace={},
+    )
 
     os.makedirs(f'{path}/source', exist_ok=True)
     shutil.copy(f'{import_templates.template_dir}/source/CMakeLists.txt',
