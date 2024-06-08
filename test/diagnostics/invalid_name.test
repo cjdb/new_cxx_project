@@ -9,6 +9,6 @@ RUN: %new-project 'invalid&name' --author='invalid_name.test' >%t 2>&1 || %expec
 RUN: FileCheck %s --input-file=%t -DNAME='invalid&name'
 
 RUN: %new-project '1nvalid_name' --author='invalid_name.test' >%t 2>&1 || %expect-error
-RUN: FileCheck %s --input-file=%t -DNAME='1nvalidname'
+RUN: FileCheck %s --input-file=%t -DNAME='1nvalid_name'
 
 CHECK: error: '[[NAME]]' cannot be used as a project name because it is not a valid C++ identifier

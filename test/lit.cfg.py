@@ -28,10 +28,5 @@ llvm_config.use_clang()
 
 config.substitutions.append(('%PATH%', config.environment['PATH']))
 
-config.substitutions.append(
-    ('%new-project',
-     f'{Path(__file__).resolve().parent.resolve().parent}/new_cxx_project.py'))
-config.substitutions.append(('%expect-error', 'exit $(($? == 0))'))
-
 tool_dirs = []
 tools = []

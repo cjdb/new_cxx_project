@@ -16,7 +16,7 @@ def generate(path: Path, author: str, std: str):
     project_name = path.name.replace('-', '_')
 
     # FIXME: learn how to support UTF-8 and support valid UTF-8 project names too.
-    if re.search('[^A-Za-z_0-9]', project_name):
+    if not re.match('^[A-Za-z][A-Za-z_0-9]*$', project_name):
         diagnostics.report_error(
             f''''{project_name}' cannot be used as a project name because it is not a valid C++ identifier''',
             fatal=True)

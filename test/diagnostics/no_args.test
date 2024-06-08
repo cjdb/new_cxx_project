@@ -1,6 +1,8 @@
 RUN: %new-project >%t 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t %s
 
-CHECK: usage: {{.*/new-c\+\+-project.py}}
-CHECK:        [-h] --author AUTHOR [-std {c++11,c++14,c++17,c++20,c++23,gnu++11,gnu++14,gnu++17,gnu++20,gnu++23}] path
-CHECK: {{.*/new-c\+\+-project.py: error: the following arguments are required: path, --author}}
+CHECK: usage: {{.*/new_cxx_project.py}}
+CHECK:        [-h] --author AUTHOR
+CHECK:        [-std {c++11,c++14,c++17,c++20,c++23,gnu++11,gnu++14,gnu++17,gnu++20,gnu++23}]
+CHECK:        path
+CHECK: {{.*/new_cxx_project.py}}: error: the following arguments are required: path, --author

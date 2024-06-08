@@ -55,6 +55,9 @@ lit.llvm.initialize(lit_config, config)
 
 config.substitutions.append(
     ('%rm', 'python @CMAKE_SOURCE_DIR@/test/lit.rm.py'))
+config.substitutions.append(
+    ('%new-project', '@PROJECT_SOURCE_DIR@/new_cxx_project.py'))
+config.substitutions.append(('%expect-error', 'if [[ $? == 0 ]]; then exit 1; fi'))
 
 # Let the main config do the real work.
 lit_config.load_config(

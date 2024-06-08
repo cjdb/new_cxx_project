@@ -2,8 +2,8 @@ RUN: %new-project %t/build_type_not_set --author='new-c++-project Test Suite'
 RUN: cmake -S %t/build_type_not_set -B %t/build -GNinja >%t/actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t/actual_error %s
 
-CHECK: CMake Error at config/cmake/detail/default_options.cmake:27 (message):
+CHECK: CMake Error at config/cmake/detail/default_options.cmake:{{[0-9]+}} (message):
 CHECK:   CMAKE_BUILD_TYPE must be set
 CHECK: Call Stack (most recent call first):
-CHECK:   config/cmake/project_options.cmake:1 (include)
-CHECK:   CMakeLists.txt:19 (include)
+CHECK:   config/cmake/project_options.cmake:{{[0-9]+}} (include)
+CHECK:   CMakeLists.txt:{{[0-9]+}} (include)
