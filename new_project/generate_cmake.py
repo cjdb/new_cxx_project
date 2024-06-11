@@ -26,6 +26,11 @@ def generate_cmake(project_name: str, path: Path, std: int,
         prefix=path,
         replace={},
     )
+    import_templates.substitute(
+        template='config/cmake/detail/add_targets.cmake',
+        prefix=path,
+        replace={},
+    )
 
     import_templates.substitute(
         template='CMakeLists.txt',

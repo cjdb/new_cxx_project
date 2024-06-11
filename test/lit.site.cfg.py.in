@@ -58,6 +58,10 @@ config.substitutions.append(
 config.substitutions.append(
     ('%new-project', '@PROJECT_SOURCE_DIR@/new_cxx_project.py'))
 config.substitutions.append(('%expect-error', 'if [[ $? == 0 ]]; then exit 1; fi'))
+escaped_directory = '@PROJECT_SOURCE_DIR@'.replace('/', '\\/')
+config.substitutions.append(
+    ('%{replace_path}', f'''awk '!/^#.*$/' | awk '{{ gsub(/{escaped_directory}/, ""); print; }}\''''))
+
 
 # Let the main config do the real work.
 lit_config.load_config(
