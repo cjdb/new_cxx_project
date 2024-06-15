@@ -102,26 +102,61 @@ function(cxx_executable)
   cxx_executable_impl("$${ARGN}")
 endfunction()
 
+function(check_library_type)
+  set(
+    single_value_args
+      LIBRARY_TYPE
+  )
+  ADD_TARGETS_EXTRACT_ARGS("" "$${single_value_args}" "" "$${ARGN}")
+
+  set(valid_types STATIC SHARED PLUGIN OBJECT HEADER_ONLY)
+  list(FIND valid_types "$${add_target_args_LIBRARY_TYPE}" library_type_result)
+  if(library_type_result EQUAL -1)
+    if(add_target_args_LIBRARY_TYPE)
+      message(FATAL_ERROR "cxx_library '$${add_target_args_TARGET}' uses unknown library type '$${add_target_args_LIBRARY_TYPE}'")
+    else()
+      message(FATAL_ERROR "cxx_library '$${add_target_args_TARGET}' does not specify a LIBRARY_TYPE")
+    endif()
+  endif()
+
+  if(add_target_args_LIBRARY_TYPE STREQUAL "HEADER_ONLY")
+    if(add_target_args_SOURCES)
+      message(SEND_ERROR "cxx_library '$${add_target_args_TARGET}' is marked as 'HEADER_ONLY', but also defines content for 'SOURCES'")
+    endif()
+  endif()
+endfunction()
+
 function(cxx_library)
   set(
     flags
   )
   set(
     single_value_args
+      LIBRARY_TYPE
   )
   set(
     list_args
       HEADER_INTERFACE
   )
   ADD_TARGETS_EXTRACT_ARGS("$${flags}" "$${single_value_args}" "$${list_args}" "$${ARGN}")
-  if(NOT add_target_args_SOURCES)
+  if(NOT add_target_args_SOURCES AND NOT add_target_args_HEADER_INTERFACE)
     message(FATAL_ERROR "build rule '$${CMAKE_CURRENT_FUNCTION}' requires at least one of 'SOURCES <file>...' or 'HEADER_INTERFACE <file>...' as a parameter")
   endif()
 
-  add_library(
-    $${add_target_args_TARGET}
-    "$${add_target_args_SOURCES}"
+  check_library_type(
+    TARGET       $${add_target_args_TARGET}
+    LIBRARY_TYPE $${add_target_args_LIBRARY_TYPE}
+    SOURCES      $${add_target_args_SOURCES}
   )
+  if($${add_target_args_LIBRARY_TYPE} STREQUAL "HEADER_ONLY")
+    add_library($${add_target_args_TARGET} INTERFACE)
+  else()
+    add_library(
+      $${add_target_args_TARGET}
+      $${add_target_args_LIBRARY_TYPE}
+      "$${add_target_args_SOURCES}"
+    )
+  endif()
   add_scoped_options(
     TARGET       "$${add_target_args_TARGET}"
     SCOPE        "PUBLIC"
