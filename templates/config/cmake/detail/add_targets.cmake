@@ -17,6 +17,7 @@ macro(ADD_TARGETS_EXTRACT_ARGS flags single_value_args list_args)
   set(
     list_args2
       "$${list_args}"
+      DEFINE
       SOURCES
       LINK_TARGETS
   )
@@ -68,6 +69,10 @@ function(add_scoped_options)
       "$${add_target_args_LINK_TARGETS}"
     )
   endif()
+
+  if(add_target_args_DEFINE)
+    target_compile_definitions($${add_target_args_TARGET} $${add_target_args_SCOPE} "$${add_target_args_DEFINE}")
+  endif()
 endfunction()
 
 macro(cxx_executable_impl)
@@ -95,6 +100,7 @@ macro(cxx_executable_impl)
     SCOPE        "PUBLIC"
     HEADERS      "$${add_target_args_HEADERS}"
     LINK_TARGETS "$${add_target_args_LINK_TARGETS}"
+    DEFINE       "$${add_target_args_DEFINE}"
   )
 endmacro()
 
@@ -162,6 +168,7 @@ function(cxx_library)
     SCOPE        "PUBLIC"
     HEADERS      "$${add_target_args_HEADER_INTERFACE}"
     LINK_TARGETS "$${add_target_args_LINK_TARGETS}"
+    DEFINE       "$${add_target_args_DEFINE}"
   )
 endfunction()
 
