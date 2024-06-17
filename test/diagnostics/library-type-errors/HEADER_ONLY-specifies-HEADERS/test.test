@@ -1,0 +1,16 @@
+RUN: %rm %t
+RUN: %new-project %t/expected_error --author='new-c++-project Test Suite'
+RUN: cp %S/CMakeLists.txt %t/expected_error/source/CMakeLists.txt
+RUN: cmake -S %t/expected_error -B %t/build -GNinja -DCMAKE_BUILD_TYPE=Debug >%t/actual_error 2>&1 || %expect-error
+RUN: FileCheck --input-file=%t/actual_error %s
+
+CHECK:       CMake Error at config/cmake/detail/add_targets.cmake:{{[0-9]+}} (message):
+CHECK-NEXT:    cxx_library 'header_only_with_HEADERS' specifies 'HEADERS', which is
+CHECK-NEXT:    incompatible with its library type, 'HEADER_ONLY'
+CHECK-EMPTY:
+CHECK-NEXT:    did you mean 'HEADER_INTERFACE'?
+CHECK-NEXT:  Call Stack (most recent call first):
+CHECK-NEXT:    config/cmake/detail/add_targets.cmake:{{[0-9]+}} (library_type_error)
+CHECK-NEXT:    config/cmake/detail/add_targets.cmake:{{[0-9]+}} (check_library_type)
+CHECK-NEXT:    source/CMakeLists.txt:1 (cxx_library)
+CHECK:       -- Configuring incomplete, errors occurred!

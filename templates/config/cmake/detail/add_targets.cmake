@@ -18,6 +18,7 @@ macro(ADD_TARGETS_EXTRACT_ARGS flags single_value_args list_args)
     list_args2
       "$${list_args}"
       DEFINE
+      HEADERS
       SOURCES
       LINK_TARGETS
   )
@@ -49,9 +50,9 @@ function(add_scoped_options)
     if($${add_target_args_SCOPE} STREQUAL "PUBLIC")
       set(file_set HEADERS)
     elseif($${add_target_args_SCOPE} STREQUAL "PRIVATE")
-      set(file_set PRIVATE_HEADERS)
+      set(file_set private_headers)
     else()
-      set(file_set INTERFACE_HEADERS)
+      set(file_set interface_headers)
     endif()
     target_sources(
       $${add_target_args_TARGET}
@@ -84,7 +85,6 @@ macro(cxx_executable_impl)
   )
   set(
     list_args
-      HEADERS
   )
   ADD_TARGETS_EXTRACT_ARGS("$${flags}" "$${single_value_args}" "$${list_args}" "$${ARGN}")
   if(NOT add_target_args_SOURCES AND NOT add_target_args_HEADER_INTERFACE)
@@ -108,13 +108,16 @@ function(cxx_executable)
   cxx_executable_impl("$${ARGN}")
 endfunction()
 
-function(check_library_type)
-  set(
-    single_value_args
-      LIBRARY_TYPE
-  )
-  ADD_TARGETS_EXTRACT_ARGS("" "$${single_value_args}" "" "$${ARGN}")
+function(library_type_error target type actual expected)
+  set(diagnostic "cxx_library '$${target}' specifies '$${actual}', which is incompatible with its library type, '$${type}'")
+  if(expected)
+    string(APPEND diagnostic "\ndid you mean '$${expected}'?")
+  endif()
 
+  message(SEND_ERROR "$${diagnostic}")
+endfunction()
+
+macro(check_library_type)
   set(valid_types STATIC SHARED PLUGIN OBJECT HEADER_ONLY)
   list(FIND valid_types "$${add_target_args_LIBRARY_TYPE}" library_type_result)
   if(library_type_result EQUAL -1)
@@ -123,14 +126,40 @@ function(check_library_type)
     else()
       message(FATAL_ERROR "cxx_library '$${add_target_args_TARGET}' does not specify a LIBRARY_TYPE")
     endif()
+  elseif(add_target_args_LIBRARY_TYPE STREQUAL "PLUGIN")
+    set(add_target_args_LIBRARY_TYPE "MODULE")
   endif()
 
   if(add_target_args_LIBRARY_TYPE STREQUAL "HEADER_ONLY")
     if(add_target_args_SOURCES)
-      message(SEND_ERROR "cxx_library '$${add_target_args_TARGET}' is marked as 'HEADER_ONLY', but also defines content for 'SOURCES'")
+      library_type_error(
+        $${add_target_args_TARGET}
+        $${add_target_args_LIBRARY_TYPE}
+        "SOURCES"
+        "HEADER_INTERFACE"
+      )
+    endif()
+    if(add_target_args_HEADERS)
+      library_type_error(
+        $${add_target_args_TARGET}
+        $${add_target_args_LIBRARY_TYPE}
+        "HEADERS"
+        "HEADER_INTERFACE"
+      )
     endif()
   endif()
-endfunction()
+
+  if(add_target_args_LIBRARY_TYPE STREQUAL "OBJECT")
+    if(add_target_args_HEADER_INTERFACE)
+      library_type_error(
+        $${add_target_args_TARGET}
+        $${add_target_args_LIBRARY_TYPE}
+        "HEADER_INTERFACE"
+        "HEADERS"
+      )
+    endif()
+  endif()
+endmacro()
 
 function(cxx_library)
   set(
@@ -150,9 +179,11 @@ function(cxx_library)
   endif()
 
   check_library_type(
-    TARGET       $${add_target_args_TARGET}
-    LIBRARY_TYPE $${add_target_args_LIBRARY_TYPE}
-    SOURCES      $${add_target_args_SOURCES}
+    TARGET           $${add_target_args_TARGET}
+    LIBRARY_TYPE     $${add_target_args_LIBRARY_TYPE}
+    SOURCES          $${add_target_args_SOURCES}
+    HEADERS          $${add_target_args_HEADERS}
+    HEADER_INTERFACE $${add_target_args_HEADER_INTERFACE}
   )
   if($${add_target_args_LIBRARY_TYPE} STREQUAL "HEADER_ONLY")
     add_library($${add_target_args_TARGET} INTERFACE)
@@ -164,9 +195,15 @@ function(cxx_library)
     )
   endif()
   add_scoped_options(
-    TARGET       "$${add_target_args_TARGET}"
     SCOPE        "PUBLIC"
+    TARGET       "$${add_target_args_TARGET}"
     HEADERS      "$${add_target_args_HEADER_INTERFACE}"
+    DEFINE       "" # deliberately empty
+  )
+  add_scoped_options(
+    SCOPE        "PRIVATE"
+    TARGET       "$${add_target_args_TARGET}"
+    HEADERS      "$${add_target_args_HEADERS}"
     LINK_TARGETS "$${add_target_args_LINK_TARGETS}"
     DEFINE       "$${add_target_args_DEFINE}"
   )

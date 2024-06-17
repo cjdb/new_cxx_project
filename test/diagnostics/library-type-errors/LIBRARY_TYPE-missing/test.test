@@ -1,7 +1,7 @@
 RUN: %rm %t
-RUN: %new-project %t/library_type_error --author='new-c++-project Test Suite'
-RUN: echo 'cxx_library(TARGET no_library_type SOURCES hello.cpp)' > %t/library_type_error/source/CMakeLists.txt
-RUN: cmake -S %t/library_type_error -B %t/build -GNinja -DCMAKE_BUILD_TYPE=Debug >%t/actual_error 2>&1 || %expect-error
+RUN: %new-project %t/expected_error --author='new-c++-project Test Suite'
+RUN: cp %S/CMakeLists.txt %t/expected_error/source/CMakeLists.txt
+RUN: cmake -S %t/expected_error -B %t/build -GNinja -DCMAKE_BUILD_TYPE=Debug >%t/actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t/actual_error %s
 
 CHECK:      CMake Error at config/cmake/detail/add_targets.cmake:{{[0-9]+}} (message):
