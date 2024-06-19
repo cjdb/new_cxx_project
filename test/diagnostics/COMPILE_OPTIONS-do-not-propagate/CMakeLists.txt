@@ -12,6 +12,6 @@ cxx_executable(
   TARGET hello
   SOURCES
     hello.cpp
-  LINK_TARGETS
+  DEPENDS_ON
     greeting
 )

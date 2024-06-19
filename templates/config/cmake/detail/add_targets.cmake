@@ -22,7 +22,7 @@ macro(ADD_TARGETS_EXTRACT_ARGS flags single_value_args list_args)
       HEADERS
       LINK_OPTIONS
       SOURCES
-      LINK_TARGETS
+      DEPENDS_ON
   )
 
   cmake_parse_arguments(
@@ -68,7 +68,7 @@ function(add_scoped_options)
   target_link_libraries(
     $${add_target_args_TARGET}
     $${add_target_args_SCOPE}
-    "$${add_target_args_LINK_TARGETS}"
+    "$${add_target_args_DEPENDS_ON}"
   )
   target_compile_definitions(
     $${add_target_args_TARGET}
@@ -114,7 +114,7 @@ macro(cxx_executable_impl)
     TARGET           "$${add_target_args_TARGET}"
     SCOPE            "PUBLIC"
     HEADERS          "$${add_target_args_HEADERS}"
-    LINK_TARGETS     "$${add_target_args_LINK_TARGETS}"
+    DEPENDS_ON       "$${add_target_args_DEPENDS_ON}"
     DEFINE           "$${add_target_args_DEFINE}"
     COMPILE_OPTIONS  "$${add_target_args_COMPILE_OPTIONS}"
     LINK_OPTIONS     "$${add_target_args_LINK_OPTIONS}"
@@ -230,7 +230,7 @@ function(cxx_library)
       SCOPE            "INTERFACE"
       TARGET           "$${add_target_args_TARGET}"
       HEADERS          "$${add_target_args_HEADER_INTERFACE}"
-      LINK_TARGETS     "$${add_target_args_LINK_TARGETS}"
+      DEPENDS_ON       "$${add_target_args_DEPENDS_ON}"
       DEFINE           "" # deliberately empty
       COMPILE_OPTIONS  "" # deliberately empty
       LINK_OPTIONS     "" # deliberately empty
@@ -253,7 +253,7 @@ function(cxx_library)
       SCOPE            "PRIVATE"
       TARGET           "$${add_target_args_TARGET}"
       HEADERS          "$${add_target_args_HEADERS}"
-      LINK_TARGETS     "$${add_target_args_LINK_TARGETS}"
+      DEPENDS_ON       "$${add_target_args_DEPENDS_ON}"
       DEFINE           "$${add_target_args_DEFINE}"
       COMPILE_OPTIONS  "$${add_target_args_COMPILE_OPTIONS}"
       LINK_OPTIONS     "$${add_target_args_LINK_OPTIONS}"

@@ -25,7 +25,7 @@ cxx_library(
     greeter.hpp
   COMPILE_OPTIONS
     -fPIC
-  LINK_TARGETS
+  DEPENDS_ON
     greeter
     greeter_impl
   LINK_OPTIONS
@@ -35,6 +35,6 @@ cxx_executable(
   TARGET hello
   SOURCES
     hello.cpp
-  LINK_TARGETS
+  DEPENDS_ON
     greeting
 )

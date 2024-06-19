@@ -13,7 +13,7 @@ cxx_test(
   TARGET test_greeter_with_macro
   SOURCES
     test_greeter.cpp
-  LINK_TARGETS
+  DEPENDS_ON
     greeter_with_macro
   DEFINE
     RETURN_TYPE
@@ -23,7 +23,7 @@ cxx_executable(
   TARGET hello_with_macro
   SOURCES
     hello.cpp
-  LINK_TARGETS
+  DEPENDS_ON
     greeter_with_macro
   DEFINE
     RETURN_TYPE

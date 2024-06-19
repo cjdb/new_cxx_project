@@ -10,13 +10,13 @@ cxx_test(
   TARGET test_greeter_shared
   SOURCES
     test_greeter.cpp
-  LINK_TARGETS
+  DEPENDS_ON
     greeter_shared
 )
 cxx_executable(
   TARGET hello_shared
   SOURCES
     hello.cpp
-  LINK_TARGETS
+  DEPENDS_ON
     greeter_shared
 )

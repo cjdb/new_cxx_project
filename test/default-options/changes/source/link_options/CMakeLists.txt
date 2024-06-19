@@ -14,7 +14,7 @@ cxx_test(
     greeter.hpp
   SOURCES
     test_greeter.cpp
-  LINK_TARGETS
+  DEPENDS_ON
     greeter_link_options
   LINK_OPTIONS
     -pie
@@ -25,7 +25,7 @@ cxx_executable(
     greeter.hpp
   SOURCES
     hello.cpp
-  LINK_TARGETS
+  DEPENDS_ON
     greeter_link_options
   LINK_OPTIONS
     -pie

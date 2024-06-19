@@ -18,7 +18,7 @@ macro(ADD_TARGETS_EXTRACT_ARGS flags single_value_args list_args)
     list_args2
       "${list_args}"
       SOURCES
-      LINK_TARGETS
+      DEPENDS_ON
   )
 
   cmake_parse_arguments(
@@ -61,11 +61,11 @@ function(add_scoped_options)
     )
   endif()
 
-  if(add_target_args_LINK_TARGETS)
+  if(add_target_args_DEPENDS_ON)
     target_link_libraries(
       ${add_target_args_TARGET}
       ${add_target_args_SCOPE}
-      "${add_target_args_LINK_TARGETS}"
+      "${add_target_args_DEPENDS_ON}"
     )
   endif()
 endfunction()
@@ -94,7 +94,7 @@ macro(cxx_executable_impl)
     TARGET       "${add_target_args_TARGET}"
     SCOPE        "PUBLIC"
     HEADERS      "${add_target_args_HEADERS}"
-    LINK_TARGETS "${add_target_args_LINK_TARGETS}"
+    DEPENDS_ON "${add_target_args_DEPENDS_ON}"
   )
 endmacro()
 
@@ -161,7 +161,7 @@ function(cxx_library)
     TARGET       "${add_target_args_TARGET}"
     SCOPE        "PUBLIC"
     HEADERS      "${add_target_args_HEADER_INTERFACE}"
-    LINK_TARGETS "${add_target_args_LINK_TARGETS}"
+    DEPENDS_ON "${add_target_args_DEPENDS_ON}"
   )
 endfunction()
 
