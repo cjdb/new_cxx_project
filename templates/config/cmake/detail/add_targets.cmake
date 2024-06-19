@@ -17,8 +17,10 @@ macro(ADD_TARGETS_EXTRACT_ARGS flags single_value_args list_args)
   set(
     list_args2
       "$${list_args}"
+      COMPILE_OPTIONS
       DEFINE
       HEADERS
+      LINK_OPTIONS
       SOURCES
       LINK_TARGETS
   )
@@ -63,17 +65,30 @@ function(add_scoped_options)
     )
   endif()
 
-  if(add_target_args_LINK_TARGETS)
-    target_link_libraries(
-      $${add_target_args_TARGET}
-      $${add_target_args_SCOPE}
-      "$${add_target_args_LINK_TARGETS}"
-    )
-  endif()
+  target_link_libraries(
+    $${add_target_args_TARGET}
+    $${add_target_args_SCOPE}
+    "$${add_target_args_LINK_TARGETS}"
+  )
+  target_compile_definitions(
+    $${add_target_args_TARGET}
+    $${add_target_args_SCOPE}
+    "$${add_target_args_DEFINE}"
+  )
+  target_compile_options(
+    $${add_target_args_TARGET}
+    $${add_target_args_SCOPE}
+    "$${add_target_args_COMPILE_OPTIONS}"
+  )
 
-  if(add_target_args_DEFINE)
-    target_compile_definitions($${add_target_args_TARGET} $${add_target_args_SCOPE} "$${add_target_args_DEFINE}")
-  endif()
+  foreach(option IN LISTS add_target_args_LINK_OPTIONS)
+    list(APPEND options "LINKER:SHELL:$${option}")
+  endforeach()
+  target_link_options(
+    $${add_target_args_TARGET}
+    $${add_target_args_SCOPE}
+    "$${options}"
+  )
 endfunction()
 
 macro(cxx_executable_impl)
@@ -96,11 +111,13 @@ macro(cxx_executable_impl)
     "$${add_target_args_SOURCES}"
   )
   add_scoped_options(
-    TARGET       "$${add_target_args_TARGET}"
-    SCOPE        "PUBLIC"
-    HEADERS      "$${add_target_args_HEADERS}"
-    LINK_TARGETS "$${add_target_args_LINK_TARGETS}"
-    DEFINE       "$${add_target_args_DEFINE}"
+    TARGET           "$${add_target_args_TARGET}"
+    SCOPE            "PUBLIC"
+    HEADERS          "$${add_target_args_HEADERS}"
+    LINK_TARGETS     "$${add_target_args_LINK_TARGETS}"
+    DEFINE           "$${add_target_args_DEFINE}"
+    COMPILE_OPTIONS  "$${add_target_args_COMPILE_OPTIONS}"
+    LINK_OPTIONS     "$${add_target_args_LINK_OPTIONS}"
   )
 endmacro()
 
@@ -147,6 +164,14 @@ macro(check_library_type)
         "HEADER_INTERFACE"
       )
     endif()
+    if(add_target_args_COMPILE_OPTIONS)
+      library_type_error(
+        $${add_target_args_TARGET}
+        $${add_target_args_LIBRARY_TYPE}
+        "COMPILE_OPTIONS"
+        ""
+      )
+    endif()
   endif()
 
   if(add_target_args_LIBRARY_TYPE STREQUAL "OBJECT")
@@ -156,6 +181,20 @@ macro(check_library_type)
         $${add_target_args_LIBRARY_TYPE}
         "HEADER_INTERFACE"
         "HEADERS"
+      )
+    endif()
+  endif()
+
+  # Parameters that aren't supported by multiple library types go here
+  if(add_target_args_LINK_OPTIONS)
+    set(unsupported_library_types HEADER_ONLY OBJECT)
+    list(FIND unsupported_library_types $${add_target_args_LIBRARY_TYPE} has_unsupported_library_type)
+    if(NOT has_unsupported_library_type EQUAL -1)
+      library_type_error(
+        $${add_target_args_TARGET}
+        $${add_target_args_LIBRARY_TYPE}
+        "LINK_OPTIONS"
+        ""
       )
     endif()
   endif()
@@ -187,26 +226,39 @@ function(cxx_library)
   )
   if($${add_target_args_LIBRARY_TYPE} STREQUAL "HEADER_ONLY")
     add_library($${add_target_args_TARGET} INTERFACE)
+    add_scoped_options(
+      SCOPE            "INTERFACE"
+      TARGET           "$${add_target_args_TARGET}"
+      HEADERS          "$${add_target_args_HEADER_INTERFACE}"
+      LINK_TARGETS     "$${add_target_args_LINK_TARGETS}"
+      DEFINE           "" # deliberately empty
+      COMPILE_OPTIONS  "" # deliberately empty
+      LINK_OPTIONS     "" # deliberately empty
+    )
   else()
     add_library(
       $${add_target_args_TARGET}
       $${add_target_args_LIBRARY_TYPE}
       "$${add_target_args_SOURCES}"
     )
+    add_scoped_options(
+      SCOPE            "PUBLIC"
+      TARGET           "$${add_target_args_TARGET}"
+      HEADERS          "$${add_target_args_HEADER_INTERFACE}"
+      DEFINE           "" # deliberately empty
+      COMPILE_OPTIONS  "" # deliberately empty
+      LINK_OPTIONS     "" # deliberately empty
+    )
+    add_scoped_options(
+      SCOPE            "PRIVATE"
+      TARGET           "$${add_target_args_TARGET}"
+      HEADERS          "$${add_target_args_HEADERS}"
+      LINK_TARGETS     "$${add_target_args_LINK_TARGETS}"
+      DEFINE           "$${add_target_args_DEFINE}"
+      COMPILE_OPTIONS  "$${add_target_args_COMPILE_OPTIONS}"
+      LINK_OPTIONS     "$${add_target_args_LINK_OPTIONS}"
+    )
   endif()
-  add_scoped_options(
-    SCOPE        "PUBLIC"
-    TARGET       "$${add_target_args_TARGET}"
-    HEADERS      "$${add_target_args_HEADER_INTERFACE}"
-    DEFINE       "" # deliberately empty
-  )
-  add_scoped_options(
-    SCOPE        "PRIVATE"
-    TARGET       "$${add_target_args_TARGET}"
-    HEADERS      "$${add_target_args_HEADERS}"
-    LINK_TARGETS "$${add_target_args_LINK_TARGETS}"
-    DEFINE       "$${add_target_args_DEFINE}"
-  )
 endfunction()
 
 function(cxx_test)
