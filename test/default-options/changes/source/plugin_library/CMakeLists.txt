@@ -1,4 +1,10 @@
 cxx_library(
+  TARGET plugin_handler
+  LIBRARY_TYPE HEADER_ONLY
+  HEADER_INTERFACE
+    plugin_handler.hpp
+)
+cxx_library(
   TARGET greeter_plugin
   LIBRARY_TYPE PLUGIN
   HEADERS
@@ -12,6 +18,8 @@ cxx_test(
     greeter.hpp
   SOURCES
     test_greeter.cpp
+  DEPENDS_ON
+    plugin_handler
 )
 cxx_executable(
   TARGET hello_with_plugin
@@ -19,4 +27,6 @@ cxx_executable(
     greeter.hpp
   SOURCES
     hello.cpp
+  DEPENDS_ON
+    plugin_handler
 )

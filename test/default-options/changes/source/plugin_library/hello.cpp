@@ -1,14 +1,12 @@
 #include <cassert>
 #include <dlfcn.h>
 #include <greeter.hpp>
+#include <plugin_handler.hpp>
 #include <print>
 
 int main()
 {
-	auto greeter = dlopen("./libgreeter_plugin.so", RTLD_LAZY | RTLD_DEEPBIND);
-	assert(greeter != nullptr);
-	auto greet = reinterpret_cast<decltype(::greet)*>(dlsym(greeter, "greet"));
-	assert(greet);
+	auto greeter = dynamic_library("./libgreeter_plugin.so");
+	auto greet = greeter.template load_function<decltype(::greet)>("greet");
 	std::println("{}", greet("Hello", "world"));
-	dlclose(greeter);
 }
