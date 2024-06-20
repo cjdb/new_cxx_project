@@ -1,7 +1,8 @@
+#include <fanciful.hpp>
 #include <greeter.hpp>
 #include <print>
 
 int main()
 {
-	std::println("{}", greet("Hello", "world"));
+	std::println("{}", make_fancy(greet("Hello", "world")));
 }

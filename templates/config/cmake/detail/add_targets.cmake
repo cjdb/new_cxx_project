@@ -172,6 +172,14 @@ macro(check_library_type)
         ""
       )
     endif()
+    if(add_target_args_DEPENDS_ON)
+      library_type_error(
+        $${add_target_args_TARGET}
+        $${add_target_args_LIBRARY_TYPE}
+        "DEPENDS_ON"
+        "DEPENDS_ON_INTERFACE"
+      )
+    endif()
   endif()
 
   if(add_target_args_LIBRARY_TYPE STREQUAL "OBJECT")
@@ -181,6 +189,15 @@ macro(check_library_type)
         $${add_target_args_LIBRARY_TYPE}
         "HEADER_INTERFACE"
         "HEADERS"
+      )
+    endif()
+
+    if(add_target_args_DEPENDS_ON_INTERFACE)
+      library_type_error(
+        $${add_target_args_TARGET}
+        $${add_target_args_LIBRARY_TYPE}
+        "DEPENDS_ON_INTERFACE"
+        "DEPENDS_ON"
       )
     endif()
   endif()
@@ -211,6 +228,7 @@ function(cxx_library)
   set(
     list_args
       HEADER_INTERFACE
+      DEPENDS_ON_INTERFACE
   )
   ADD_TARGETS_EXTRACT_ARGS("$${flags}" "$${single_value_args}" "$${list_args}" "$${ARGN}")
   if(NOT add_target_args_SOURCES AND NOT add_target_args_HEADER_INTERFACE)
@@ -245,6 +263,7 @@ function(cxx_library)
       SCOPE            "PUBLIC"
       TARGET           "$${add_target_args_TARGET}"
       HEADERS          "$${add_target_args_HEADER_INTERFACE}"
+      DEPENDS_ON       "$${add_target_args_DEPENDS_ON_INTERFACE}"
       DEFINE           "" # deliberately empty
       COMPILE_OPTIONS  "" # deliberately empty
       LINK_OPTIONS     "" # deliberately empty

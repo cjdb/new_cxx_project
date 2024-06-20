@@ -5,12 +5,21 @@ cxx_library(
     greeter.hpp
 )
 
+cxx_library(
+  TARGET fanciful_header_only
+  LIBRARY_TYPE HEADER_ONLY
+  HEADER_INTERFACE
+    fanciful.hpp
+  DEPENDS_ON_INTERFACE
+    greeter_header_only
+)
+
 cxx_executable(
   TARGET hello_header_only
   SOURCES
     hello.cpp
   DEPENDS_ON
-    greeter_header_only
+    fanciful_header_only
 )
 
 cxx_test(
@@ -18,5 +27,5 @@ cxx_test(
   SOURCES
     test_greeter.cpp
   DEPENDS_ON
-    greeter_header_only
+    fanciful_header_only
 )

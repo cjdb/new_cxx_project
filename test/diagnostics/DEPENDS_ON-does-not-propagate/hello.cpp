@@ -1,5 +1,5 @@
-#include <fanciful.hpp>
 #include <greeter.hpp>
+#include <make_fancy.hpp>
 #include <print>
 
 int main()
