@@ -17,8 +17,9 @@ CHECK:          -- Building with C++23 (extensions enabled)
 CHECK-NEXT:     -- Build type: Debug
 CHECK-NEXT:     CMake Error at config/cmake/detail/add_targets.cmake:{{[0-9]+}} (message):
 CHECK-EXE-NEXT:    build rule '[[build_rule]]' requires 'SOURCES <file>...' as a parameter
-CHECK-LIB-NEXT:    build rule 'cxx_library' requires at least one of 'SOURCES <file>...' or
-CHECK-LIB-NEXT:    'HEADER_INTERFACE <file>...' as a parameter
+CHECK-LIB-NEXT:    build rule 'cxx_library' requires at least one of 'SOURCES <file>...',
+CHECK-LIB-NEXT:    'HEADER_INTERFACE <file>...', or 'MODULE_INTERFACE <file>...' as a
+CHECK-LIB-NEXT:    parameter
 CHECK-NEXT:     Call Stack (most recent call first):
 CHECK-EXE-NEXT:       config/cmake/detail/add_targets.cmake:{{[0-9]+}} (cxx_executable_impl)
 CHECK-NEXT:       source/CMakeLists.txt:1 ([[build_rule]])

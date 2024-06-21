@@ -180,6 +180,15 @@ macro(check_library_type)
         "DEPENDS_ON_INTERFACE"
       )
     endif()
+
+    if(add_target_args_MODULE_INTERFACE)
+      library_type_error(
+        $${add_target_args_TARGET}
+        $${add_target_args_LIBRARY_TYPE}
+        "MODULE_INTERFACE"
+        "HEADER_INTERFACE"
+      )
+    endif()
   endif()
 
   if(add_target_args_LIBRARY_TYPE STREQUAL "OBJECT")
@@ -189,6 +198,15 @@ macro(check_library_type)
         $${add_target_args_LIBRARY_TYPE}
         "HEADER_INTERFACE"
         "HEADERS"
+      )
+    endif()
+
+    if(add_target_args_MODULE_INTERFACE)
+      library_type_error(
+        $${add_target_args_TARGET}
+        $${add_target_args_LIBRARY_TYPE}
+        "MODULE_INTERFACE"
+        "SOURCES"
       )
     endif()
 
@@ -227,12 +245,13 @@ function(cxx_library)
   )
   set(
     list_args
+      MODULE_INTERFACE
       HEADER_INTERFACE
       DEPENDS_ON_INTERFACE
   )
   ADD_TARGETS_EXTRACT_ARGS("$${flags}" "$${single_value_args}" "$${list_args}" "$${ARGN}")
-  if(NOT add_target_args_SOURCES AND NOT add_target_args_HEADER_INTERFACE)
-    message(FATAL_ERROR "build rule '$${CMAKE_CURRENT_FUNCTION}' requires at least one of 'SOURCES <file>...' or 'HEADER_INTERFACE <file>...' as a parameter")
+  if(NOT add_target_args_SOURCES AND NOT add_target_args_HEADER_INTERFACE AND NOT add_target_args_MODULE_INTERFACE)
+    message(FATAL_ERROR "build rule '$${CMAKE_CURRENT_FUNCTION}' requires at least one of 'SOURCES <file>...', 'HEADER_INTERFACE <file>...', or 'MODULE_INTERFACE <file>...' as a parameter")
   endif()
 
   check_library_type(
@@ -277,6 +296,15 @@ function(cxx_library)
       COMPILE_OPTIONS  "$${add_target_args_COMPILE_OPTIONS}"
       LINK_OPTIONS     "$${add_target_args_LINK_OPTIONS}"
     )
+
+    if(add_target_args_MODULE_INTERFACE)
+      target_sources(
+        $${add_target_args_TARGET}
+        PUBLIC
+        FILE_SET CXX_MODULES
+        FILES "$${add_target_args_MODULE_INTERFACE}"
+      )
+    endif()
   endif()
 endfunction()
 
