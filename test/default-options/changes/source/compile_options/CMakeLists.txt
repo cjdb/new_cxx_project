@@ -15,6 +15,7 @@ cxx_test(
   SOURCES
     test_greeter.cpp
   DEPENDS_ON
+    check
     greeter_compile_options
   COMPILE_OPTIONS
     -fno-inline

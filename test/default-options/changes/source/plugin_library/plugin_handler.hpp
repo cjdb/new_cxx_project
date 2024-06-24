@@ -1,7 +1,7 @@
 #ifndef PLUGIN_HANDLER
 #define PLUGIN_HANDLER
 
-#include <cassert>
+#include <check.hpp>
 #include <dlfcn.h>
 #include <functional>
 #include <memory>
@@ -13,7 +13,7 @@ public:
 	dynamic_library(std::string_view const name)
 	: library_(dlopen(name.data(), RTLD_LAZY | RTLD_DEEPBIND), dlclose)
 	{
-		assert(library_ != nullptr);
+		CHECK(library_ != nullptr);
 	}
 
 	template<class T>
@@ -36,7 +36,7 @@ public:
 	dynamic_function<T> load_function(std::string_view const name)
 	{
 		auto function = reinterpret_cast<T*>(dlsym(library_.get(), name.data()));
-		assert(function != nullptr);
+		CHECK(function != nullptr);
 		return dynamic_function(function);
 	}
 private:

@@ -15,6 +15,7 @@ cxx_test(
   SOURCES
     test_greeter.cpp
   DEPENDS_ON
+    check
     greeter_link_options
   LINK_OPTIONS
     -pie

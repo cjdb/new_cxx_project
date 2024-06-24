@@ -1,8 +1,8 @@
-#include <cassert>
+#include <check.hpp>
 #include <fanciful.hpp>
 #include <greeter.hpp>
 
 int main()
 {
-	assert(make_fancy(greet("Hello", "world")) == "fancy Hello, world!");
+	CHECK(make_fancy(greet("Hello", "world")) == "fancy Hello, world!");
 }

@@ -267,7 +267,7 @@ function(cxx_library)
       SCOPE            "INTERFACE"
       TARGET           "$${add_target_args_TARGET}"
       HEADERS          "$${add_target_args_HEADER_INTERFACE}"
-      DEPENDS_ON       "$${add_target_args_DEPENDS_ON}"
+      DEPENDS_ON       "$${add_target_args_DEPENDS_ON_INTERFACE}"
       DEFINE           "" # deliberately empty
       COMPILE_OPTIONS  "" # deliberately empty
       LINK_OPTIONS     "" # deliberately empty

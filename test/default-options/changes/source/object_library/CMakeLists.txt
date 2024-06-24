@@ -13,6 +13,7 @@ cxx_test(
   SOURCES
     test_greeter.cpp
   DEPENDS_ON
+    check
     greeter_object
 )
 cxx_executable(

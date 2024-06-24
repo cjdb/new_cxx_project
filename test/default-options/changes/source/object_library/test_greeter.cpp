@@ -1,7 +1,7 @@
-#include <cassert>
+#include <check.hpp>
 #include <greeter.hpp>
 
 int main()
 {
-	assert(greet("Hello", "world") == "Hello, world!");
+	CHECK(greet("Hello", "world") == "Hello, world!");
 }

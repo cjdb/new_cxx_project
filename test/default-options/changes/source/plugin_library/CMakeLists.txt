@@ -3,6 +3,8 @@ cxx_library(
   LIBRARY_TYPE HEADER_ONLY
   HEADER_INTERFACE
     plugin_handler.hpp
+  DEPENDS_ON_INTERFACE
+    check
 )
 cxx_library(
   TARGET greeter_plugin

@@ -32,6 +32,7 @@ cxx_library(
 cxx_test(
   TARGET test_greeter_multi_file
   HEADERS
+    check.hpp
     greeter.hpp
     greeter_impl.hpp
   SOURCES

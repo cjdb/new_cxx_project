@@ -21,6 +21,7 @@ cxx_test(
   SOURCES
     test_greeter.cpp
   DEPENDS_ON
+    check
     fanciful_static
 )
 cxx_executable(

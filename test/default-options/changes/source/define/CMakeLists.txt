@@ -14,6 +14,7 @@ cxx_test(
   SOURCES
     test_greeter.cpp
   DEPENDS_ON
+    check
     greeter_with_macro
   DEFINE
     RETURN_TYPE
