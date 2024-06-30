@@ -41,12 +41,44 @@ string(
     -Wsign-promo
     -Wunused
     -Wno-ignored-attributes
-    -Wno-cxx-attribute-extension
-    -Wno-gnu-include-next
-    -Wno-private-header
     -Wno-unused-command-line-argument${stdlib}${hardening}
+)
+string(
+  JOIN " " CMAKE_EXE_LINKER_FLAGS_INIT${compiler_rt}${libunwind}
 )
 
 string(
-  JOIN " " CMAKE_EXE_LINKER_FLAGS_INIT${compiler_rt}${libunwind}
+  JOIN " " CMAKE_CXX_FLAGS_DEBUG_INIT
+    -fsanitize=address${undefined}
+)
+string(
+  JOIN " " CMAKE_EXE_LINKER_FLAGS_DEBUG_INIT
+    -fsanitize=address${undefined}
+)
+
+string(
+  JOIN " " CMAKE_CXX_FLAGS_RELEASE_INIT
+    ${lto}${cfi}
+)
+string(
+  JOIN " " CMAKE_EXE_LINKER_FLAGS_RELEASE_INIT
+    ${lto}${cfi}
+)
+
+string(
+  JOIN " " CMAKE_CXX_FLAGS_MINSIZEREL_INIT
+    ${lto}${cfi}
+)
+string(
+  JOIN " " CMAKE_EXE_LINKER_FLAGS_MINSIZEREL_INIT
+    ${lto}${cfi}
+)
+
+string(
+  JOIN " " CMAKE_CXX_FLAGS_RELWITHDEBINFO_INIT
+    -fsanitize=address${undefined}
+)
+string(
+  JOIN " " CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO_INIT
+    -fsanitize=address${undefined}
 )

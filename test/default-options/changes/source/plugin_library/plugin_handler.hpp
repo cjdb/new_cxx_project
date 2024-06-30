@@ -11,7 +11,7 @@
 class dynamic_library {
 public:
 	dynamic_library(std::string_view const name)
-	: library_(dlopen(name.data(), RTLD_LAZY | RTLD_DEEPBIND), dlclose)
+	: library_(dlopen(name.data(), RTLD_LAZY), dlclose)
 	{
 		CHECK(library_ != nullptr);
 	}

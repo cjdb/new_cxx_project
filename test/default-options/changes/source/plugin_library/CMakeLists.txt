@@ -13,6 +13,8 @@ cxx_library(
     greeter.hpp
   SOURCES
     greeter.cpp
+  COMPILE_OPTIONS
+    -Wno-pragmas
 )
 cxx_test(
   TARGET test_greeter_with_plugin
@@ -22,6 +24,8 @@ cxx_test(
     test_greeter.cpp
   DEPENDS_ON
     plugin_handler
+  COMPILE_OPTIONS
+    -Wno-pragmas
 )
 cxx_executable(
   TARGET hello_with_plugin
@@ -31,4 +35,6 @@ cxx_executable(
     hello.cpp
   DEPENDS_ON
     plugin_handler
+  COMPILE_OPTIONS
+    -Wno-pragmas
 )

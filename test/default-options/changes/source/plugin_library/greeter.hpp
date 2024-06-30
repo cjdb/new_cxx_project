@@ -3,6 +3,11 @@
 
 #include <string>
 
-extern "C" std::string greet(std::string_view const greeting, std::string_view const name);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wreturn-type-c-linkage"
+
+extern "C" std::string greet(std::string_view greeting, std::string_view name);
+
+#pragma GCC diagnostic pop
 
 #endif // GREETER_HPP

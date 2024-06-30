@@ -1,0 +1,34 @@
+CHECK-CTEST:             Internal ctest changing into directory: {{.+/build}}
+CHECK-CTEST-NEXT:        Test project {{.+/build}}
+CHECK-CTEST-NEXT:              Start  1: test.test_greeter_header_only
+CHECK-CTEST-NEXT:         1/11 Test  #1: test.test_greeter_header_only ........   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:              Start  2: test.test_greeter_object
+CHECK-CTEST-NEXT:         2/11 Test  #2: test.test_greeter_object .............   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:              Start  3: test.test_greeter_with_plugin
+CHECK-CTEST-NEXT:         3/11 Test  #3: test.test_greeter_with_plugin ........   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:              Start  4: test.test_greeter_shared
+CHECK-CTEST-NEXT:         4/11 Test  #4: test.test_greeter_shared .............   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:              Start  5: test.test_greeter_static
+CHECK-CTEST-NEXT:         5/11 Test  #5: test.test_greeter_static .............   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:              Start  6: test.test_greeter_multi_file
+CHECK-CTEST-NEXT:         6/11 Test  #6: test.test_greeter_multi_file .........   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:              Start  7: test.hello_multi_file
+CHECK-CTEST-NEXT:         7/11 Test  #7: test.hello_multi_file ................   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:              Start  8: test.test_greeter_with_macro
+CHECK-CTEST-NEXT:         8/11 Test  #8: test.test_greeter_with_macro .........   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:              Start  9: test.test_greeter_compile_options
+CHECK-CTEST-NEXT:         9/11 Test  #9: test.test_greeter_compile_options ....   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:              Start 10: test.test_greeter_link_options
+CHECK-CTEST-NEXT:        10/11 Test #10: test.test_greeter_link_options .......   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:              Start 11: test.test_greeter_object_with_asan
+CHECK-CTEST-ASAN-NEXT:   11/11 Test #11: test.test_greeter_object_with_asan ...***Failed    {{[0-9.]+}} sec
+CHECK-CTEST-NOASAN-NEXT: 11/11 Test #11: test.test_greeter_object_with_asan ...   Passed  {{[0-9.]+}} sec
+CHECK-CTEST-ASAN-NEXT:   =================================================================
+CHECK-CTEST-ASAN-NEXT:   ERROR: AddressSanitizer: heap-buffer-overflow on address
+CHECK-CTEST-ASAN:        SUMMARY: AddressSanitizer: heap-buffer-overflow
+CHECK-CTEST-ASAN:        ABORTING
+CHECK-CTEST-ASAN:        91% tests passed, 1 tests failed out of 11
+CHECK-CTEST-NOASAN:      100% tests passed, 0 tests failed out of 11
+CHECK-CTEST-ASAN:        The following tests FAILED:
+CHECK-CTEST-ASAN:        11 - test.test_greeter_object_with_asan
+CHCEK-CTEST-ASAN:        Errors while running CTest

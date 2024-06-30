@@ -62,6 +62,10 @@ def generate_toolchain(toolchain: Toolchain, path: Path, prefix: Path):
         hardening = f'{indent}-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_FAST'
         compiler_rt = f'{indent}-rtlib=compiler-rt'
         libunwind = f'{indent}-unwindlib=libunwind'
+        lto=f'-flto=thin'
+        cfi=f'{indent}-fsanitize=undefined -fno-sanitize-recover=all -fsanitize-minimal-runtime'
+        undefined=',undefined -fno-sanitize-recover=all'
+
         suffix = '-llvm'
     else:
         cc = 'gcc'
@@ -75,6 +79,9 @@ def generate_toolchain(toolchain: Toolchain, path: Path, prefix: Path):
         compiler_rt = ''
         libunwind = ''
         suffix = '-gnu'
+        lto = '-flto=auto'
+        cfi = ''
+        undefined = ''
 
     triple = 'x86_64-unknown-linux-gnu'
     target = triple.partition('-')[0]
@@ -98,5 +105,8 @@ def generate_toolchain(toolchain: Toolchain, path: Path, prefix: Path):
             'target': target,
             'triple': triple,
             'prefix': prefix,
+            'lto': lto,
+            'cfi': cfi,
+            'undefined': undefined,
         },
     )

@@ -1,0 +1,41 @@
+CHECK-CTEST:            Internal ctest changing into directory: {{.+/build}}
+CHECK-CTEST-NEXT:       Test project {{.+/build}}
+CHECK-CTEST-NEXT:             Start  1: test.test_greeter_header_only
+CHECK-CTEST-NEXT:        1/12 Test  #1: test.test_greeter_header_only .........   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:             Start  2: test.test_greeter_object
+CHECK-CTEST-NEXT:        2/12 Test  #2: test.test_greeter_object ..............   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:             Start  3: test.test_greeter_with_plugin
+CHECK-CTEST-NEXT:        3/12 Test  #3: test.test_greeter_with_plugin .........   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:             Start  4: test.test_greeter_shared
+CHECK-CTEST-NEXT:        4/12 Test  #4: test.test_greeter_shared ..............   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:             Start  5: test.test_greeter_static
+CHECK-CTEST-NEXT:        5/12 Test  #5: test.test_greeter_static ..............   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:             Start  6: test.test_greeter_multi_file
+CHECK-CTEST-NEXT:        6/12 Test  #6: test.test_greeter_multi_file ..........   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:             Start  7: test.hello_multi_file
+CHECK-CTEST-NEXT:        7/12 Test  #7: test.hello_multi_file .................   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:             Start  8: test.test_greeter_with_macro
+CHECK-CTEST-NEXT:        8/12 Test  #8: test.test_greeter_with_macro ..........   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:             Start  9: test.test_greeter_compile_options
+CHECK-CTEST-NEXT:        9/12 Test  #9: test.test_greeter_compile_options .....   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:             Start 10: test.test_greeter_link_options
+CHECK-CTEST-NEXT:       10/12 Test #10: test.test_greeter_link_options ........   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-NEXT:             Start 11: test.test_greeter_object_with_asan
+CHECK-CTEST-SAN-NEXT:   11/12 Test #11: test.test_greeter_object_with_asan ....***Failed    {{[0-9.]+}} sec
+CHECK-CTEST-NOSAN-NEXT: 11/12 Test #11: test.test_greeter_object_with_asan ....   Passed    {{[0-9.]+}} sec
+CHECK-CTEST-SAN-NEXT:   =================================================================
+CHECK-CTEST-SAN-NEXT:   ERROR: AddressSanitizer: heap-buffer-overflow on address
+CHECK-CTEST-SAN:        SUMMARY: AddressSanitizer: heap-buffer-overflow
+CHECK-CTEST-SAN:        ABORTING
+CHECK-CTEST:                  Start 12: test.test_greeter_object_with_ubsan
+CHECK-CTEST-SAN-NEXT:   12/12 Test #12: test.test_greeter_object_with_ubsan ...***Failed    {{[0-9.]+}} sec
+CHECK-CTEST-SAN-NEXT:   {{.+/llvm_toolchain/source/ubsan/greeter.cpp}}:{{[0-9]+}}:{{[0-9]+}}: runtime error: signed integer overflow: 2147483647 + 5 cannot be represented in type 'int'
+CHECK-CTEST-SAN-NEXT:   SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior {{.+/llvm_toolchain/source/ubsan/greeter.cpp}}:{{[0-9]+}}:{{[0-9]+}}
+CHECK-CTEST-NOSAN-NEXT: 12/12 Test #12: test.test_greeter_object_with_ubsan ...Subprocess aborted***Exception: {{[0-9.]+}} sec
+CHECK-CTEST-NOSAN-NEXT: ubsan: add-overflow by {{0x[0-9a-f]+}}
+CHECK-CTEST-SAN:        83% tests passed, 2 tests failed out of 12
+CHECK-CTEST-NOSAN:      92% tests passed, 1 tests failed out of 12
+CHECK-CTEST:            The following tests FAILED:
+CHECK-CTEST-SAN:        11 - test.test_greeter_object_with_asan
+CHECK-CTEST:            12 - test.test_greeter_object_with_ubsan
+CHCEK-CTEST:            Errors while running CTest

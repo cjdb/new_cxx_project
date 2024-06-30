@@ -1,0 +1,28 @@
+CHECK-CMAKE:                     -- The C compiler identification is Clang {{[0-9.]+}}
+CHECK-CMAKE-NEXT:                -- The CXX compiler identification is Clang {{[0-9.]+}}
+CHECK-CMAKE-NEXT:                -- Detecting C compiler ABI info
+CHECK-CMAKE-NEXT:                -- Detecting C compiler ABI info - done
+CHECK-CMAKE-NEXT:                -- Check for working C compiler: /usr/bin/clang - skipped
+CHECK-CMAKE-NEXT:                -- Detecting C compile features
+CHECK-CMAKE-NEXT:                -- Detecting C compile features - done
+CHECK-CMAKE-NEXT:                -- Detecting CXX compiler ABI info
+CHECK-CMAKE-NEXT:                -- Detecting CXX compiler ABI info - done
+CHECK-CMAKE-NEXT:                -- Check for working CXX compiler: /usr/bin/clang++ - skipped
+CHECK-CMAKE-NEXT:                -- Detecting CXX compile features
+CHECK-CMAKE-NEXT:                -- Detecting CXX compile features - done
+CHECK-CMAKE-NEXT:                -- Building with C++23 (extensions enabled)
+CHECK-CMAKE-DEBUG-NEXT:          -- Build type: Debug
+CHECK-CMAKE-RELEASE-NEXT:        -- Build type: Release
+CHECK-CMAKE-MINSIZEREL-NEXT:     -- Build type: MinSizeRel
+CHECK-CMAKE-RELWITHDEBINFO-NEXT: -- Build type: RelWithDebInfo
+CHECK-CMAKE-NEXT:                CMake Warning (dev) at config/cmake/install_targets.cmake:{{[0-9]+}} (message):
+CHECK-CMAKE-NEXT:                  no installation targets have been declared (please modify
+CHECK-CMAKE-NEXT:                  {{.+/llvm_toolchain/config/cmake/install_targets.cmake}}
+CHECK-CMAKE-NEXT:                  to rectify this)
+CHECK-CMAKE-NEXT:                Call Stack (most recent call first):
+CHECK-CMAKE-NEXT:                  CMakeLists.txt:{{[0-9]+}} (include)
+CHECK-CMAKE-NEXT:                This warning is for project developers.  Use -Wno-dev to suppress it.
+CHECK-CMAKE-EMPTY:
+CHECK-CMAKE-NEXT:                -- Configuring done ({{[0-9.]+s}})
+CHECK-CMAKE-NEXT:                -- Generating done ({{[0-9.]+s}})
+CHECK-CMAKE-NEXT:                -- Build files have been written to: {{.+/build}}
