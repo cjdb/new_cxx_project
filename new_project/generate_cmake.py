@@ -7,6 +7,7 @@ import new_project.import_templates as import_templates
 def generate_cmake(project_name: str, path: Path, std: int,
                    extensions_enabled: bool):
     os.makedirs(f'{path}/config/cmake/detail', exist_ok=True)
+    os.makedirs(f'{path}/config/cmake/packages', exist_ok=True)
     import_templates.substitute(
         template='config/cmake/detail/default_options.cmake',
         prefix=path,
@@ -25,6 +26,18 @@ def generate_cmake(project_name: str, path: Path, std: int,
         template='config/cmake/project_options.cmake',
         prefix=path,
         replace={},
+    )
+    import_templates.substitute(
+        template='config/cmake/import_packages.cmake',
+        prefix=path,
+        replace={},
+    )
+    import_templates.substitute(
+        template='config/cmake/packages/FindSphinx.cmake',
+        prefix=path,
+        replace={
+            'PROJECT_NAME': project_name.upper(),
+        },
     )
     import_templates.substitute(
         template='config/cmake/detail/add_targets.cmake',

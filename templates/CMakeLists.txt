@@ -15,6 +15,7 @@ endif()
 
 include("$${PROJECT_SOURCE_DIR}/config/cmake/project_options.cmake")
 include("$${PROJECT_SOURCE_DIR}/config/cmake/detail/add_targets.cmake")
+include("$${PROJECT_SOURCE_DIR}/config/cmake/import_packages.cmake")
 enable_testing()
 include(CTest)
 
