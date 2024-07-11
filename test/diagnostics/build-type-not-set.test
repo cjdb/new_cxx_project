@@ -1,3 +1,4 @@
+RUN: %rm %t
 RUN: %new-project %t/build_type_not_set --author='new-c++-project Test Suite'
 RUN: cmake -S %t/build_type_not_set -B %t/build -GNinja >%t/actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t/actual_error %s

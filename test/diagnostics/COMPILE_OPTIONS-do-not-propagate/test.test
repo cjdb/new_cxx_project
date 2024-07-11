@@ -2,17 +2,17 @@ RUN: %rm %t
 RUN: %new-project %t/expected_error --author='new-c++-project Test Suite'
 RUN: cp %S/CMakeLists.txt %t/expected_error/source/CMakeLists.txt
 RUN: cp %S/*pp %t/expected_error/source/.
-RUN: cmake -S %t/expected_error -B %t/build -GNinja -DCMAKE_BUILD_TYPE=Debug
+RUN: cmake -S %t/expected_error -B %t/build -GNinja -DCMAKE_BUILD_TYPE=Debug -DEXPECTED_ERROR_BUILD_DOCS=No
 RUN: ninja -j1 -C %t/build >%t/actual_error 2>&1 || %expect-error
 RUN: %{replace_path} %t/actual_error | FileCheck %s
 
 CHECK:      ninja: Entering directory `/build/test/diagnostics/COMPILE_OPTIONS-do-not-propagate/Output/test.test.tmp/build'
 CHECK-NEXT: [1/8] Scanning /build/test/diagnostics/COMPILE_OPTIONS-do-not-propagate/Output/test.test.tmp/expected_error/source/greeter.cpp for CXX dependencies
 CHECK-NEXT: [2/8] Generating CXX dyndep file source/CMakeFiles/greeting.dir/CXX.dd
-CHECK-NEXT: [3/8] Scanning /build/test/diagnostics/COMPILE_OPTIONS-do-not-propagate/Output/test.test.tmp/expected_error/source/hello.cpp for CXX dependencies
-CHECK-NEXT: [4/8] Building CXX object source/CMakeFiles/greeting.dir/greeter.cpp.o
-CHECK-NEXT: [5/8] Generating CXX dyndep file source/CMakeFiles/hello.dir/CXX.dd
-CHECK-NEXT: [6/8] Linking CXX static library source/libgreeting.a
+CHECK-NEXT: [3/8] Building CXX object source/CMakeFiles/greeting.dir/greeter.cpp.o
+CHECK-NEXT: [4/8] Linking CXX static library source/libgreeting.a
+CHECK-NEXT: [5/8] Scanning /build/test/diagnostics/COMPILE_OPTIONS-do-not-propagate/Output/test.test.tmp/expected_error/source/hello.cpp for CXX dependencies
+CHECK-NEXT: [6/8] Generating CXX dyndep file source/CMakeFiles/hello.dir/CXX.dd
 CHECK-NEXT: [7/8] Building CXX object source/CMakeFiles/hello.dir/hello.cpp.o
 CHECK-NEXT: FAILED: source/CMakeFiles/hello.dir/hello.cpp.o
 CHECK-NEXT: /usr/bin/c++  -I/build/test/diagnostics/COMPILE_OPTIONS-do-not-propagate/Output/test.test.tmp/expected_error/source -g -std=gnu++23 -MD -MT source/CMakeFiles/hello.dir/hello.cpp.o -MF source/CMakeFiles/hello.dir/hello.cpp.o.d -fmodules-ts -fmodule-mapper=source/CMakeFiles/hello.dir/hello.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o source/CMakeFiles/hello.dir/hello.cpp.o -c /build/test/diagnostics/COMPILE_OPTIONS-do-not-propagate/Output/test.test.tmp/expected_error/source/hello.cpp
