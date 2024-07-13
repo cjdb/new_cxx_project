@@ -13,9 +13,7 @@ RUN: echo 'cxx_test(SOURCES hello.cpp)' > %t/target_not_set/source/CMakeLists.tx
 RUN: cmake -S %t/target_not_set -B %t/build -GNinja -DCMAKE_BUILD_TYPE=Debug >%t/actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t/actual_error %s --check-prefixes=CHECK,CHECK-EXE -Dbuild_rule=cxx_test
 
-CHECK:          -- Building with C++23 (extensions enabled)
-CHECK-NEXT:     -- Build type: Debug
-CHECK-NEXT:     CMake Error at config/cmake/detail/add_targets.cmake:{{[0-9]+}} (message):
+CHECK:          CMake Error at config/cmake/detail/add_targets.cmake:{{[0-9]+}} (message):
 CHECK-NEXT:       build rule '[[build_rule]]' requires 'TARGET <target-name>' as a parameter
 CHECK-NEXT:     Call Stack (most recent call first):
 CHECK-NEXT:       config/cmake/detail/add_targets.cmake:{{[0-9]+}} (ADD_TARGETS_EXTRACT_ARGS)

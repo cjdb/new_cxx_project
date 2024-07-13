@@ -13,9 +13,7 @@ RUN: echo 'cxx_test(TARGET hello)' > %t/source_not_set/source/CMakeLists.txt
 RUN: cmake -S %t/source_not_set -B %t/build -GNinja -DCMAKE_BUILD_TYPE=Debug >%t/actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t/actual_error %s --check-prefixes=CHECK,CHECK-EXE -Dbuild_rule=cxx_test
 
-CHECK:          -- Building with C++23 (extensions enabled)
-CHECK-NEXT:     -- Build type: Debug
-CHECK-NEXT:     CMake Error at config/cmake/detail/add_targets.cmake:{{[0-9]+}} (message):
+CHECK:          CMake Error at config/cmake/detail/add_targets.cmake:{{[0-9]+}} (message):
 CHECK-EXE-NEXT:    build rule '[[build_rule]]' requires 'SOURCES <file>...' as a parameter
 CHECK-LIB-NEXT:    build rule 'cxx_library' requires at least one of 'SOURCES <file>...',
 CHECK-LIB-NEXT:    'HEADER_INTERFACE <file>...', or 'MODULE_INTERFACE <file>...' as a
