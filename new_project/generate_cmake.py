@@ -4,8 +4,7 @@ from pathlib import Path
 import new_project.import_templates as import_templates
 
 
-def generate_cmake(project_name: str, path: Path, std: int,
-                   extensions_enabled: bool):
+def generate_cmake(project_name: str, path: Path):
     os.makedirs(f'{path}/config/cmake/detail', exist_ok=True)
     os.makedirs(f'{path}/config/cmake/packages', exist_ok=True)
     import_templates.substitute(
@@ -49,8 +48,6 @@ def generate_cmake(project_name: str, path: Path, std: int,
         template='CMakeLists.txt',
         prefix=path,
         replace={
-            'cxx_standard': std,
-            'extensions': 'Yes' if extensions_enabled else 'No',
             'PROJECT_NAME': project_name.upper(),
         },
     )

@@ -11,7 +11,7 @@ import re
 import shutil
 
 
-def generate(path: Path, author: str, std: str, remote: str):
+def generate(path: Path, author: str, remote: str):
     project_name = path.name.replace('-', '_')
 
     # FIXME: learn how to support UTF-8 and support valid UTF-8 project names too.
@@ -25,10 +25,7 @@ def generate(path: Path, author: str, std: str, remote: str):
             f''''{path}' already exists, aborting to avoid overwriting its contents...'''
         )
 
-    generate_cmake(project_name=project_name,
-                   path=path,
-                   std=std[-2:],
-                   extensions_enabled=std[0] == 'g')
+    generate_cmake(project_name=project_name, path=path)
     generate_docs(project_name=project_name, author=author, path=path)
 
     import_templates.substitute(

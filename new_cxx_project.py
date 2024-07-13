@@ -11,10 +11,7 @@ import new_project.diagnostics as diagnostics
 
 def main():
     args = parse_args()
-    generate(path=Path(args.path),
-             author=args.author,
-             std=args.std,
-             remote=args.remote)
+    generate(path=Path(args.path), author=args.author, remote=args.remote)
     sys.exit(int(diagnostics.total_errors != 0))
 
 
