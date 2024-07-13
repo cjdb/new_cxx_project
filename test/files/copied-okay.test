@@ -1,0 +1,6 @@
+RUN: %rm %t/copied_okay
+RUN: %new-project %t/copied_okay --author='copied_okay'
+RUN: pushd %t/copied_okay
+RUN: rm -r .git
+RUN: popd
+RUN: diff -r %S/expected %t/copied_okay

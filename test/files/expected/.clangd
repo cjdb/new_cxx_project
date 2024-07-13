@@ -1,0 +1,9 @@
+CompileFlags:
+  Remove:
+    - -fmodules
+  CompilationDatabase: ./build
+Diagnostics:
+  MissingIncludes: Strict
+Index:
+  Background: Build
+  StandardLibrary: Yes

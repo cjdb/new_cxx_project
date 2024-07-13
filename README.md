@@ -28,6 +28,8 @@ this project's one.
 * `-std=<value>` configures the project with a specific C++ standard. Valid values include `c++11`,
   `c++14`, `c++17`, `c++20`, `c++23`, `gnu++11`, `gnu++14`, `gnu++17`, `gnu++20`, and `gnu++23`. The
   default is `gnu++23`.
+* `--remote=<value>` sets the Git remote. If the tool detects a valid GitHub remote, then it will
+  also generate files for tracking issues, pull requests, and GitHub actions.
 
 ## Indices and tables
 

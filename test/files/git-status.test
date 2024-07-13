@@ -1,0 +1,8 @@
+RUN: %rm %t/git
+RUN: %new-project %t/git --author='git'
+RUN: pushd %t/git
+RUN: git status --porcelain --ignored | FileCheck %s --allow-empty
+RUN: git remote -v | FileCheck %s --allow-empty
+RUN: popd
+
+CHECK-NOT: {{.+}}

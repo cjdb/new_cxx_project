@@ -4,5 +4,6 @@ RUN: FileCheck --input-file=%t %s
 CHECK: usage: {{.*/new_cxx_project.py}}
 CHECK:        [-h] --author AUTHOR
 CHECK:        [-std {c++11,c++14,c++17,c++20,c++23,gnu++11,gnu++14,gnu++17,gnu++20,gnu++23}]
+CHECK:        [--remote REMOTE]
 CHECK:        path
 CHECK: {{.*/new_cxx_project.py}}: error: the following arguments are required: path, --author

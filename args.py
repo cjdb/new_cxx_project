@@ -31,5 +31,10 @@ def parse_args():
         default='gnu++23',
         help='The C++ standard to build against (default=gnu++23).',
     )
+    parser.add_argument(
+        '--remote',
+        type=str,
+        help='A remote that the repo can be uploaded to by default',
+        default='')
 
     return parser.parse_args()

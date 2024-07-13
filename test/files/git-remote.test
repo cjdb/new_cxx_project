@@ -1,0 +1,26 @@
+RUN: %rm %t/git-file
+RUN: %new-project %t/git-file --author='git' --remote=file:///tmp/dir.git
+RUN: pushd %t/git-file
+RUN: git remote -v | FileCheck %s --check-prefix=CHECK-REMOTE -DREMOTE=file:///tmp/dir.git
+RUN: popd
+
+RUN: %rm %t/git-https
+RUN: %new-project %t/git-https --author='git' --remote=https://host.xyz/cjdb/new_cxx_project.git
+RUN: pushd %t/git-https
+RUN: git remote -v | FileCheck %s --check-prefix=CHECK-REMOTE -DREMOTE=https://host.xyz/cjdb/new_cxx_project.git
+RUN: popd
+
+RUN: %rm %t/git-git
+RUN: %new-project %t/git-git --author='git' --remote=git://host.xyz/cjdb/new_cxx_project.git
+RUN: pushd %t/git-git
+RUN: git remote -v | FileCheck %s --check-prefix=CHECK-REMOTE -DREMOTE=git://host.xyz/cjdb/new_cxx_project.git
+RUN: popd
+
+RUN: %rm %t/git-ssh
+RUN: %new-project %t/git-ssh --author='git' --remote=git@host.xyz:cjdb/new_cxx_project.git
+RUN: pushd %t/git-ssh
+RUN: git remote -v | FileCheck %s --check-prefix=CHECK-REMOTE -DREMOTE=git@host.xyz:cjdb/new_cxx_project.git
+RUN: popd
+
+CHECK-REMOTE: origin [[REMOTE]] (fetch)
+CHECK-REMOTE: origin [[REMOTE]] (push)
