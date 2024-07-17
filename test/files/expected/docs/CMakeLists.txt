@@ -10,6 +10,7 @@ sphinx_documentation(
     "LICENCE.md"
     "CODE_OF_CONDUCT.md"
     source/project/cmake.rst
+    source/project/vcpkg.rst
   TEMPLATES
     "_templates/layout.html"
 )

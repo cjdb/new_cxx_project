@@ -27,6 +27,11 @@ this project's one.
 
 * `--remote=<value>` sets the Git remote. If the tool detects a valid GitHub remote, then it will
   also generate files for tracking issues, pull requests, and GitHub actions.
+* `--package-manager=<value>` sets the project's package manager. Valid values are `none` and `vcpkg`.
+  Defaults to `none`.
+* `--package-manager-remote=<value>` sets the remote to download the package manager from. Remotes
+  that are on-disk should be prefixed with `file://`. The default remotes are
+    * **vcpkg**: https://github.com/Microsoft/vcpkg.git
 
 ## Indices and tables
 

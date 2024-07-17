@@ -1,5 +1,5 @@
 RUN: %rm %t
-RUN: %new-project %t/expected_error --author='new-c++-project Test Suite'
+RUN: %new-project %t/expected_error --author='new-c++-project Test Suite' --package-manager=none
 RUN: cp %S/CMakeLists.txt %t/expected_error/source/CMakeLists.txt
 RUN: cp %S/*pp %t/expected_error/source/.
 RUN: cmake -S %t/expected_error -B %t/build -GNinja -DCMAKE_BUILD_TYPE=Debug -DEXPECTED_ERROR_BUILD_DOCS=No

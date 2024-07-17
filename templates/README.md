@@ -5,7 +5,7 @@
 
 LICENCE
 CODE_OF_CONDUCT.md
-${build_systems}
+${build_systems}${package_managers}
 ```
 
 ## Indices and tables

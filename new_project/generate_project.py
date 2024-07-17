@@ -1,7 +1,7 @@
 # Copyright (c) Christopher Di Bella.
 # SPDX-License-Identifier: Apache-2.0 with LLVM Exception
 #
-from git import Repo
+from git import Repo, Submodule
 from new_project.generate_cmake import generate_cmake
 from pathlib import Path
 import new_project.diagnostics as diagnostics
@@ -11,7 +11,8 @@ import re
 import shutil
 
 
-def generate(path: Path, author: str, remote: str):
+def generate(path: Path, author: str, remote: str, package_manager: str,
+             package_manager_remote: str):
     project_name = path.name.replace('-', '_')
 
     # FIXME: learn how to support UTF-8 and support valid UTF-8 project names too.
@@ -25,8 +26,13 @@ def generate(path: Path, author: str, remote: str):
             f''''{path}' already exists, aborting to avoid overwriting its contents...'''
         )
 
-    generate_cmake(project_name=project_name, path=path)
-    generate_docs(project_name=project_name, author=author, path=path)
+    generate_cmake(project_name=project_name,
+                   path=path,
+                   package_manager=package_manager)
+    generate_docs(project_name=project_name,
+                  author=author,
+                  path=path,
+                  package_manager=package_manager)
 
     import_templates.substitute(
         template='.clang-format',
@@ -50,10 +56,14 @@ def generate(path: Path, author: str, remote: str):
     shutil.copy(f'{import_templates.template_dir}/source/CMakeLists.txt',
                 f'{path}/source/CMakeLists.txt')
 
-    generate_repo(path, remote)
+    generate_repo(path=path,
+                  remote=remote,
+                  package_manager=package_manager,
+                  package_manager_remote=package_manager_remote)
 
 
-def generate_docs(project_name: str, author: str, path: Path):
+def generate_docs(project_name: str, author: str, path: Path,
+                  package_manager: str):
     os.makedirs(f'{path}/docs/source/project', exist_ok=True)
 
     import_templates.substitute(
@@ -61,7 +71,8 @@ def generate_docs(project_name: str, author: str, path: Path):
         prefix=path,
         replace={
             'project_name': project_name,
-            'build_systems': 'source/project/cmake'
+            'build_systems': 'source/project/cmake',
+            'package_managers': '\nsource/project/vcpkg',
         },
     )
     import_templates.substitute(
@@ -86,7 +97,8 @@ def generate_docs(project_name: str, author: str, path: Path):
         prefix=path,
         replace={
             'PROJECT_NAME': project_name.upper(),
-            'build_systems': f'{indent}source/project/cmake.rst'
+            'build_systems': f'{indent}source/project/cmake.rst',
+            'package_managers': f'{indent}source/project/vcpkg.rst',
         },
     )
     import_templates.substitute(
@@ -106,6 +118,15 @@ def generate_docs(project_name: str, author: str, path: Path):
         },
     )
 
+    if package_manager == 'vcpkg':
+        import_templates.substitute(
+            template='docs/source/project/vcpkg.rst',
+            prefix=path,
+            replace={
+                'project_name': project_name,
+            },
+        )
+
     docs = f'{path}/docs'
     shutil.copytree(f'{import_templates.template_dir}/docs/_templates',
                     f'{docs}/_templates')
@@ -114,7 +135,8 @@ def generate_docs(project_name: str, author: str, path: Path):
     os.symlink(f'../CODE_OF_CONDUCT.md', f'{docs}/CODE_OF_CONDUCT.md')
 
 
-def generate_repo(path: Path, remote: str):
+def generate_repo(path: Path, remote: str, package_manager: str,
+                  package_manager_remote: str):
     repo = Repo.init(path=path, mkdir=False)
     repo.active_branch.rename('main')
 
@@ -122,6 +144,16 @@ def generate_repo(path: Path, remote: str):
         repo.create_remote(name='origin', url=f'{remote}')
     shutil.copy(f'{import_templates.template_dir}/.gitignore',
                 f'{path}/.gitignore')
+
+    if package_manager == 'vcpkg':
+        if not package_manager_remote:
+            package_manager_remote = 'https://github.com/Microsoft/vcpkg.git'
+        vcpkg = Submodule.add(repo,
+                              'vcpkg',
+                              path=f'{path}/vcpkg',
+                              url=package_manager_remote)
+        vcpkg.update(recursive=True, init=True, to_latest_revision=True)
+
     repo.index.add(
         ['*', '.gitignore', '.clang-format', '.clang-tidy', '.clangd'])
     repo.index.commit(

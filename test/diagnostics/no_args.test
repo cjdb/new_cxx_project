@@ -2,5 +2,7 @@ RUN: %new-project >%t 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t %s
 
 CHECK: usage: {{.*/new_cxx_project.py}}
-CHECK:        [-h] --author AUTHOR [--remote REMOTE] path
+CHECK:        [-h] --author AUTHOR [--remote REMOTE] [--package-manager {none,vcpkg}]
+CHECK:        [--package-manager-remote PACKAGE_MANAGER_REMOTE]
+CHECK:        path
 CHECK: {{.*/new_cxx_project.py}}: error: the following arguments are required: path, --author

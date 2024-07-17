@@ -6,6 +6,7 @@
 LICENCE
 CODE_OF_CONDUCT.md
 source/project/cmake
+source/project/vcpkg
 ```
 
 ## Indices and tables

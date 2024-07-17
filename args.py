@@ -19,5 +19,18 @@ def parse_args():
         type=str,
         help='A remote that the repo can be uploaded to by default',
         default='')
+    parser.add_argument(
+        '--package-manager',
+        type=str,
+        choices=['none', 'vcpkg'],
+        help='Specifies the package manager to use',
+        default='none',
+    )
+    parser.add_argument(
+        '--package-manager-remote',
+        type=str,
+        help='A remote that the package manager can be acquired from',
+        default='',
+    )
 
     return parser.parse_args()

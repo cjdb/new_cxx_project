@@ -1,6 +1,6 @@
 RUN: %rm preexisting_repo
-RUN: %new-project preexisting_repo --author='preexisting_repo.test'
-RUN: %new-project preexisting_repo --author='preexisting_repo.test' >%t 2>&1 || %expect-error
+RUN: %new-project preexisting_repo --author='preexisting_repo.test' --package-manager=none
+RUN: %new-project preexisting_repo --author='preexisting_repo.test' --package-manager=none >%t 2>&1 || %expect-error
 RUN: FileCheck %s --input-file=%t
 
 CHECK: error: 'preexisting_repo' already exists, aborting to avoid overwriting its contents...

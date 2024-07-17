@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED Yes)
 set(CMAKE_EXPORT_COMPILE_COMMANDS Yes)
 
 message(STATUS "Building with C++$${CMAKE_CXX_STANDARD} (extensions enabled)")
-
+${include_package_manager}
 include("$${PROJECT_SOURCE_DIR}/config/cmake/project_options.cmake")
 include("$${PROJECT_SOURCE_DIR}/config/cmake/detail/add_targets.cmake")
 include("$${PROJECT_SOURCE_DIR}/config/cmake/import_packages.cmake")

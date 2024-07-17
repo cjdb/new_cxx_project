@@ -8,7 +8,7 @@ sphinx_documentation(
   SOURCES
     "index.md"
     "LICENCE.md"
-    "CODE_OF_CONDUCT.md"${build_systems}
+    "CODE_OF_CONDUCT.md"${build_systems}${package_managers}
   TEMPLATES
     "_templates/layout.html"
 )

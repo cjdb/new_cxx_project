@@ -13,7 +13,8 @@ cxx_test(
   SOURCES
     test_greeter.cpp
   DEPENDS_ON
-    check
+    Catch2::Catch2
+    Catch2::Catch2WithMain
     greeter_object
 )
 cxx_executable(
