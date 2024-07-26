@@ -5,6 +5,9 @@ cxx_library(
     greeter.hpp
   SOURCES
     greeter.cpp
+  INSTALL_WITH install-targets
+  INSTALL_PREFIX_INCLUDE shared
+  INSTALL_PERMISSIONS OWNER_READ OWNER_WRITE
 )
 cxx_library(
   TARGET fanciful_shared
@@ -15,6 +18,8 @@ cxx_library(
     fanciful.cpp
   DEPENDS_ON_INTERFACE
     greeter_shared
+  INSTALL_WITH install-targets
+  INSTALL_PREFIX_INCLUDE shared
 )
 cxx_test(
   TARGET test_greeter_shared
@@ -30,4 +35,5 @@ cxx_executable(
     hello.cpp
   DEPENDS_ON
     fanciful_shared
+  INSTALL_WITH install-targets
 )

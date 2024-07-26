@@ -36,13 +36,16 @@ def generate_cmake(project_name: str, path: Path, package_manager: str):
         template='config/cmake/packages/FindSphinx.cmake',
         prefix=path,
         replace={
+            'project_name': project_name,
             'PROJECT_NAME': project_name.upper(),
         },
     )
     import_templates.substitute(
         template='config/cmake/detail/add_targets.cmake',
         prefix=path,
-        replace={},
+        replace={
+            'project_name': project_name,
+        },
     )
 
     include_package_manager = ''
@@ -53,6 +56,7 @@ def generate_cmake(project_name: str, path: Path, package_manager: str):
         template='CMakeLists.txt',
         prefix=path,
         replace={
+            'project_name': project_name,
             'PROJECT_NAME': project_name.upper(),
             'include_package_manager': f'\n{include_package_manager}' if include_package_manager else '',
         },

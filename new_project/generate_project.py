@@ -9,6 +9,7 @@ import new_project.import_templates as import_templates
 import os
 import re
 import shutil
+import sys
 
 
 def generate(path: Path, author: str, remote: str, package_manager: str,
@@ -56,7 +57,8 @@ def generate(path: Path, author: str, remote: str, package_manager: str,
     shutil.copy(f'{import_templates.template_dir}/source/CMakeLists.txt',
                 f'{path}/source/CMakeLists.txt')
 
-    generate_repo(path=path,
+    generate_repo(project_name=project_name,
+                  path=path,
                   remote=remote,
                   package_manager=package_manager,
                   package_manager_remote=package_manager_remote)
@@ -135,13 +137,18 @@ def generate_docs(project_name: str, author: str, path: Path,
     os.symlink(f'../CODE_OF_CONDUCT.md', f'{docs}/CODE_OF_CONDUCT.md')
 
 
-def generate_repo(path: Path, remote: str, package_manager: str,
-                  package_manager_remote: str):
+def generate_repo(project_name: str, path: Path, remote: str,
+                  package_manager: str, package_manager_remote: str):
     repo = Repo.init(path=path, mkdir=False)
     repo.active_branch.rename('main')
 
     if remote:
         repo.create_remote(name='origin', url=f'{remote}')
+        if 'github.com' in remote:
+            try_generate_github(project_name=project_name,
+                                remote=remote,
+                                path=path)
+
     shutil.copy(f'{import_templates.template_dir}/.gitignore',
                 f'{path}/.gitignore')
 
@@ -158,4 +165,40 @@ def generate_repo(path: Path, remote: str, package_manager: str,
         ['*', '.gitignore', '.clang-format', '.clang-tidy', '.clangd'])
     repo.index.commit(
         'initial commit\n\nThis commit was generated using https://github.com/cjdb/new_cxx_project.'
+    )
+
+
+def try_generate_github(project_name: str, remote: str, path: Path):
+    if '://github.com/' in remote:
+        remote_matcher = re.compile(
+            r'^((git|https)://)?github.com/(.*/.*[.]git)$')
+    else:
+        remote_matcher = re.compile('^((git)@github.com):(.*/.*[.]git)$')
+
+    repository = remote_matcher.match(remote)
+    if not repository:
+        diagnostics.report_error(
+            f"remote '{remote}' contains 'github.com', but it looks incorrect")
+        diagnostics.report_note("valid remotes include:\n"
+                                "  * 'https://github.com/user/repo.git'\n"
+                                "  * 'git://github.com/user/repo.git'\n"
+                                "  * 'git@github.com:user/repo.git'")
+        sys.exit(1)  # FIXME: raise an exception
+
+    os.makedirs(f'{path}/.github/workflows')
+    shutil.copytree(f'{import_templates.template_dir}/.github/ISSUE_TEMPLATE',
+                    f'{path}/.github/ISSUE_TEMPLATE')
+
+    import_templates.substitute(
+        template='.github/pull_request_template.md',
+        prefix=path,
+        replace={},
+    )
+    import_templates.substitute(
+        template='.github/workflows/basic_ci.yml',
+        prefix=path,
+        replace={
+            'PROJECT_NAME': project_name.upper(),
+            'repository': repository.group(3)
+        },
     )

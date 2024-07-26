@@ -128,7 +128,9 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
     HEADERS headers...\
     INDCLUDE directories...\
     LINK_OPTIONS linker_options...\
-    DEPENDS_ON dependencies...)
+    DEPENDS_ON dependencies... \
+    INSTALL_WITH install_target \
+    INSTALL_PERMISSIONS install_permissions...)
 
   Builds an executable program. Accepts the following parameters:
 
@@ -179,16 +181,16 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
 
   .. option:: HEADERS:LIST[STRING]
 
-  Tells the compiler the set of headers that the target depends on.
+    Tells the compiler the set of headers that the target depends on.
 
-  .. code-block:: cmake
+    .. code-block:: cmake
 
-    cxx_executable(
-      TARGET hello
-      SOURCES hello.cpp
-      HEADERS
-        "$${PROJECT_SOURCE_DIR}/include/greeting.hpp"
-    )
+      cxx_executable(
+        TARGET hello
+        SOURCES hello.cpp
+        HEADERS
+          "$${PROJECT_SOURCE_DIR}/include/greeting.hpp"
+      )
 
   .. option:: LINK_OPTIONS:LIST[STRING]
 
@@ -217,6 +219,20 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
             GLFW3
         )
 
+  .. option:: INSTALL_WITH:STRING
+
+    Installs the executable to :code:`$${CMAKE_INSTALL_PREFIX}/bin` when :code:`install_target` is
+    invoked as a build target.
+
+  .. option:: INSTALL_PERMISSIONS:LIST[STRING]
+
+    Determines the permissions that the executable will have when installed. Valid values include
+    :code:`OWNER_READ`, :code:`OWNER_WRITE`, :code:`OWNER_EXECUTE`, :code:`GROUP_READ`,
+    :code:`GROUP_WRITE`, :code:`GROUP_EXECUTE`, :code:`WORLD_READ`, :code:`WORLD_WRITE`, and
+    :code:`WORLD_EXECUTE`.
+
+    Defaults to :code:`OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE`.
+
 .. function::
   cxx_library(\
     TARGET target_name\
@@ -227,7 +243,11 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
     HEADER_INTERFACE headers_to_export\
     DEFINE macros...\
     DEPENDS_ON_INTERFACE public_dependencies...\
-    DEPENDS_ON private_dependencies...)
+    DEPENDS_ON private_dependencies... \
+    INSTALL_WITH install_target \
+    INSTALL_PREFIX_INCLUDE directory \
+    INSTALL_PREFIX_LIBRARY directory \
+    INSTALL_PERMISSIONS install_permissions...)
 
   Builds a library. :func:`cxx_library` supports the following named arguments.
 
@@ -371,22 +391,22 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
     HEADERS:LIST[STRING]
     HEADER_INTERFACE:LIST[STRING]
 
-  Tells the build system the set of headers that the target depends on. Headers listed under
-  :code:`HEADER_INTERFACE` are installed, while headers listed under :code:`HEADERS` are not.
+    Tells the build system the set of headers that the target depends on. Headers listed under
+    :code:`HEADER_INTERFACE` are installed, while headers listed under :code:`HEADERS` are not.
 
-  .. code-block:: cmake
+    .. code-block:: cmake
 
-    cxx_library(
-      TARGET hello
-      LIBRARY_TYPE OBJECT
-      HEADER_INTERFACE
-        "$${PROJECT_SOURCE_DIR}/include/greeter.hpp"
-      HEADERS
-        "$${PROJECT_SOURCE_DIR}/source/strings.hpp"
-      SOURCES
-        greeter.cpp
-        strings.cpp
-    )
+      cxx_library(
+        TARGET hello
+        LIBRARY_TYPE OBJECT
+        HEADER_INTERFACE
+          "$${PROJECT_SOURCE_DIR}/include/greeter.hpp"
+        HEADERS
+          "$${PROJECT_SOURCE_DIR}/source/strings.hpp"
+        SOURCES
+          greeter.cpp
+          strings.cpp
+      )
 
   .. option:: DEFINE:LIST[STRING]
 
@@ -409,10 +429,39 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
             GLFW3
         )
 
+  .. option:: INSTALL_WITH:STRING
+
+    Installs header interfaces to :code:`$${CMAKE_INSTALL_PREFIX}/include`, and static archives,
+    shared objects, and plugins to :code:`$${CMAKE_INSTALL_PREFIX}/lib` when :code:`install_target`
+    is invoked as a build target.
+
+    .. note::
+
+      Module interfaces can't be installed at the moment.
+
+  .. option:: INSTALL_PREFIX_INCLUDE:STRING
+
+    Tells the build system to install headers to the path in
+    :code:`$${CMAKE_INSTALL_PREFIX}/include/$${INSTALL_PREFIX_INCLUDE}`.
+
+  .. option:: INSTALL_PREFIX_LIBRARY:STRING
+
+    Tells the build system to install static archives, shared objects, and plugins to the path in
+    :code:`$${CMAKE_INSTALL_PREFIX}/include/$${INSTALL_PREFIX_LIBRARY}`.
+
+  .. option:: INSTALL_PERMISSIONS:LIST[STRING]
+
+    Determines the permissions that the library will have when installed. Valid values include
+    :code:`OWNER_READ`, :code:`OWNER_WRITE`, :code:`OWNER_EXECUTE`, :code:`GROUP_READ`,
+    :code:`GROUP_WRITE`, :code:`GROUP_EXECUTE`, :code:`WORLD_READ`, :code:`WORLD_WRITE`, and
+    :code:`WORLD_EXECUTE`.
+
+    Defaults to :code:`OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ`.
+
 .. function:: cxx_test
 
   A wrapper around :func:`cxx_executable` to register the executable with CTest. The parameters are
-  identical.
+  identical, excluding install options.
 
   The test will be named :code:`test.$$TARGET_NAME`, where :code:`$$TARGET_NAME` is a placeholder for
   what you passed to :code:`TARGET`.

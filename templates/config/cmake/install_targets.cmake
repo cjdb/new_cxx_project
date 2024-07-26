@@ -5,11 +5,10 @@ include(CMakePackageConfigHelpers)
 # doesn't have anything to install.
 #
 # install(
-#   EXPORT ${project_name}-installation-target
+#   EXPORT ${project_name}-install
 #   FILE ${project_name}-config.cmake
 #   NAMESPACE ${project_name}::
 #   DESTINATION lib/cmake/${project_name}
-#   CXX_MODULES_DIRECTORY lib/modules/${project_name}
 # )
 
 message(

@@ -5,6 +5,9 @@ cxx_library(
     greeter.hpp
   SOURCES
     greeter.cpp
+  INSTALL_WITH install-targets
+  INSTALL_PREFIX_INCLUDE static-inc
+  INSTALL_PREFIX_LIBRARY static
 )
 cxx_library(
   TARGET fanciful_static
@@ -30,4 +33,6 @@ cxx_executable(
     hello.cpp
   DEPENDS_ON
     fanciful_static
+  INSTALL_WITH install-target
+  INSTALL_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_EXECUTE WORLD_READ
 )

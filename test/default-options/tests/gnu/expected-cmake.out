@@ -27,14 +27,6 @@ CHECK-CMAKE:       -- Running vcpkg install - done
 CHECK-CMAKE-NEXT:  -- Build type: [[BUILD_TYPE]]
 CHECK-CMAKE-NEXT:  -- Found Python3: {{.+/python[0-9.]*}} (found version "{{[0-9.]+}}") found components: Interpreter
 CHECK-CMAKE-NEXT:  -- Found Sphinx: {{.+/sphinx-build}}
-CHECK-CMAKE-NEXT:  CMake Warning (dev) at config/cmake/install_targets.cmake:{{[0-9]+}} (message):
-CHECK-CMAKE-NEXT:    no installation targets have been declared (please modify
-CHECK-CMAKE-NEXT:    {{.+/gnu_toolchain/config/cmake/install_targets.cmake}}
-CHECK-CMAKE-NEXT:    to rectify this)
-CHECK-CMAKE-NEXT:  Call Stack (most recent call first):
-CHECK-CMAKE-NEXT:    CMakeLists.txt:{{[0-9]+}} (include)
-CHECK-CMAKE-NEXT:  This warning is for project developers.  Use -Wno-dev to suppress it.
-CHECK-CMAKE-EMPTY:
 CHECK-CMAKE-NEXT:  -- Configuring done ({{[0-9.]+s}})
 CHECK-CMAKE-NEXT:  -- Generating done ({{[0-9.]+s}})
 CHECK-CMAKE-NEXT:  -- Build files have been written to: {{.+/build}}

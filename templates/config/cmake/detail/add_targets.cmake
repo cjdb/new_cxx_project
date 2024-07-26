@@ -3,6 +3,8 @@
 #
 # Defines functions that generate C++ executables, libraries, and tests.
 
+include(GNUInstallDirs)
+
 # Extracts values passed to a build rule.
 macro(ADD_TARGETS_EXTRACT_ARGS flags single_value_args list_args)
   set(
@@ -13,6 +15,9 @@ macro(ADD_TARGETS_EXTRACT_ARGS flags single_value_args list_args)
     single_value_args2
       "$${single_value_args}"
       TARGET
+      INSTALL_WITH
+      INSTALL_PREFIX_INCLUDE
+      INSTALL_PREFIX_LIBRARY
   )
   set(
     list_args2
@@ -23,6 +28,7 @@ macro(ADD_TARGETS_EXTRACT_ARGS flags single_value_args list_args)
       LINK_OPTIONS
       SOURCES
       DEPENDS_ON
+      INSTALL_PERMISSIONS
   )
 
   cmake_parse_arguments(
@@ -49,12 +55,10 @@ function(add_scoped_options)
   endif()
 
   if(add_target_args_HEADERS)
-    if($${add_target_args_SCOPE} STREQUAL "PUBLIC")
+    if(NOT $${add_target_args_SCOPE} STREQUAL "PRIVATE")
       set(file_set HEADERS)
-    elseif($${add_target_args_SCOPE} STREQUAL "PRIVATE")
-      set(file_set private_headers)
     else()
-      set(file_set interface_headers)
+      set(file_set private_headers)
     endif()
     target_sources(
       $${add_target_args_TARGET}
@@ -89,6 +93,47 @@ function(add_scoped_options)
     $${add_target_args_SCOPE}
     "$${options}"
   )
+
+  if(add_target_args_INSTALL_WITH)
+    if(add_target_args_MODULE_INTERFACE)
+      message(SEND_ERROR "cxx_library '$${add_target_args_TARGET}' tries to install a module interface, but tooling isn't mature enough to support installing them yet")
+      return()
+    endif()
+
+    cmake_path(
+      APPEND
+        INSTALL_INCLUDEDIR
+        "$${CMAKE_INSTALL_INCLUDEDIR}"
+        "$${add_target_args_INSTALL_PREFIX_INCLUDE}"
+    )
+    cmake_path(
+      APPEND
+        INSTALL_LIBDIR
+        "$${CMAKE_INSTALL_LIBDIR}"
+        "$${add_target_args_INSTALL_PREFIX_LIBRARY}"
+    )
+
+    install(
+      TARGETS $${add_target_args_TARGET}
+      EXPORT  $${add_target_args_INSTALL_WITH}
+      FILE_SET HEADERS
+        DESTINATION "$${INSTALL_INCLUDEDIR}"
+        COMPONENT development
+        PERMISSIONS $${add_target_args_INSTALL_PERMISSIONS}
+      ARCHIVE
+        DESTINATION "$${INSTALL_LIBDIR}"
+        COMPONENT development
+        PERMISSIONS $${add_target_args_INSTALL_PERMISSIONS}
+      LIBRARY
+        DESTINATION "$${INSTALL_LIBDIR}"
+        COMPONENT runtime
+        PERMISSIONS $${add_target_args_INSTALL_PERMISSIONS}
+      RUNTIME
+        DESTINATION "$${CMAKE_INSTALL_BINDIR}"
+        COMPONENT runtime
+        PERMISSIONS $${add_target_args_INSTALL_PERMISSIONS}
+    )
+  endif()
 endfunction()
 
 macro(cxx_executable_impl)
@@ -110,14 +155,32 @@ macro(cxx_executable_impl)
     $${add_target_args_TARGET}
     "$${add_target_args_SOURCES}"
   )
+
+  if(add_target_args_INSTALL_WITH AND NOT add_target_args_INSTALL_PERMISSIONS)
+    set(
+      add_target_args_INSTALL_PERMISSIONS
+        OWNER_READ
+        OWNER_WRITE
+        OWNER_EXECUTE
+        GROUP_READ
+        GROUP_EXECUTE
+        WORLD_READ
+        WORLD_EXECUTE
+    )
+  endif()
+
   add_scoped_options(
-    TARGET           "$${add_target_args_TARGET}"
-    SCOPE            "PUBLIC"
-    HEADERS          "$${add_target_args_HEADERS}"
-    DEPENDS_ON       "$${add_target_args_DEPENDS_ON}"
-    DEFINE           "$${add_target_args_DEFINE}"
-    COMPILE_OPTIONS  "$${add_target_args_COMPILE_OPTIONS}"
-    LINK_OPTIONS     "$${add_target_args_LINK_OPTIONS}"
+    TARGET                 "$${add_target_args_TARGET}"
+    SCOPE                  PRIVATE
+    HEADERS                "$${add_target_args_HEADERS}"
+    DEPENDS_ON             "$${add_target_args_DEPENDS_ON}"
+    DEFINE                 "$${add_target_args_DEFINE}"
+    COMPILE_OPTIONS        "$${add_target_args_COMPILE_OPTIONS}"
+    LINK_OPTIONS           "$${add_target_args_LINK_OPTIONS}"
+    INSTALL_WITH           "$${add_target_args_INSTALL_WITH}"
+    INSTALL_PREFIX_INCLUDE "$${add_target_args_INSTALL_PREFIX_INCLDUE}"
+    INSTALL_PREFIX_LIBRARY "$${add_target_args_INSTALL_PREFIX_LIBRARY}"
+    INSTALL_PERMISSIONS    "$${add_target_args_INSTALL_PERMISSIONS}"
   )
 endmacro()
 
@@ -218,6 +281,15 @@ macro(check_library_type)
         "DEPENDS_ON"
       )
     endif()
+
+    if(add_target_args_INSTALL_WITH)
+      library_type_error(
+        $${add_target_args_TARGET}
+        $${add_target_args_LIBRARY_TYPE}
+        "INSTALL_WITH"
+        ""
+      )
+    endif()
   endif()
 
   # Parameters that aren't supported by multiple library types go here
@@ -261,16 +333,32 @@ function(cxx_library)
     HEADERS          $${add_target_args_HEADERS}
     HEADER_INTERFACE $${add_target_args_HEADER_INTERFACE}
   )
+
+  if(add_target_args_INSTALL_WITH AND NOT add_target_args_INSTALL_PERMISSIONS)
+    set(
+      add_target_args_INSTALL_PERMISSIONS
+        OWNER_READ
+        OWNER_WRITE
+        GROUP_READ
+        WORLD_READ
+    )
+  endif()
+
   if($${add_target_args_LIBRARY_TYPE} STREQUAL "HEADER_ONLY")
     add_library($${add_target_args_TARGET} INTERFACE)
+    target_include_directories($${add_target_args_TARGET} INTERFACE)
     add_scoped_options(
-      SCOPE            "INTERFACE"
-      TARGET           "$${add_target_args_TARGET}"
-      HEADERS          "$${add_target_args_HEADER_INTERFACE}"
-      DEPENDS_ON       "$${add_target_args_DEPENDS_ON_INTERFACE}"
-      DEFINE           "" # deliberately empty
-      COMPILE_OPTIONS  "" # deliberately empty
-      LINK_OPTIONS     "" # deliberately empty
+      SCOPE                  "INTERFACE"
+      TARGET                 "$${add_target_args_TARGET}"
+      HEADERS                "$${add_target_args_HEADER_INTERFACE}"
+      DEPENDS_ON             "$${add_target_args_DEPENDS_ON_INTERFACE}"
+      DEFINE                 "" # deliberately empty
+      COMPILE_OPTIONS        "" # deliberately empty
+      LINK_OPTIONS           "" # deliberately empty
+      INSTALL_WITH           "$${add_target_args_INSTALL_WITH}"
+      INSTALL_PREFIX_INCLUDE "$${add_target_args_INSTALL_PREFIX_INCLUDE}"
+      INSTALL_PREFIX_LIBRARY "$${add_target_args_INSTALL_PREFIX_LIBRARY}"
+      INSTALL_PERMISSIONS    "$${add_target_args_INSTALL_PERMISSIONS}"
     )
   else()
     add_library(
@@ -279,22 +367,30 @@ function(cxx_library)
       "$${add_target_args_SOURCES}"
     )
     add_scoped_options(
-      SCOPE            "PUBLIC"
-      TARGET           "$${add_target_args_TARGET}"
-      HEADERS          "$${add_target_args_HEADER_INTERFACE}"
-      DEPENDS_ON       "$${add_target_args_DEPENDS_ON_INTERFACE}"
-      DEFINE           "" # deliberately empty
-      COMPILE_OPTIONS  "" # deliberately empty
-      LINK_OPTIONS     "" # deliberately empty
+      SCOPE                  "PUBLIC"
+      TARGET                 "$${add_target_args_TARGET}"
+      HEADERS                "$${add_target_args_HEADER_INTERFACE}"
+      DEPENDS_ON             "$${add_target_args_DEPENDS_ON_INTERFACE}"
+      DEFINE                 "" # deliberately empty
+      COMPILE_OPTIONS        "" # deliberately empty
+      LINK_OPTIONS           "" # deliberately empty
+      INSTALL_WITH           "$${add_target_args_INSTALL_WITH}"
+      INSTALL_PREFIX_INCLUDE "$${add_target_args_INSTALL_PREFIX_INCLUDE}"
+      INSTALL_PREFIX_LIBRARY "$${add_target_args_INSTALL_PREFIX_LIBRARY}"
+      INSTALL_PERMISSIONS    "$${add_target_args_INSTALL_PERMISSIONS}"
     )
     add_scoped_options(
-      SCOPE            "PRIVATE"
-      TARGET           "$${add_target_args_TARGET}"
-      HEADERS          "$${add_target_args_HEADERS}"
-      DEPENDS_ON       "$${add_target_args_DEPENDS_ON}"
-      DEFINE           "$${add_target_args_DEFINE}"
-      COMPILE_OPTIONS  "$${add_target_args_COMPILE_OPTIONS}"
-      LINK_OPTIONS     "$${add_target_args_LINK_OPTIONS}"
+      SCOPE                  "PRIVATE"
+      TARGET                 "$${add_target_args_TARGET}"
+      HEADERS                "$${add_target_args_HEADERS}"
+      DEPENDS_ON             "$${add_target_args_DEPENDS_ON}"
+      DEFINE                 "$${add_target_args_DEFINE}"
+      COMPILE_OPTIONS        "$${add_target_args_COMPILE_OPTIONS}"
+      LINK_OPTIONS           "$${add_target_args_LINK_OPTIONS}"
+      INSTALL_WITH           "" # deliberately empty
+      INSTALL_PREFIX_INCLUDE "" # deliberately empty
+      INSTALL_PREFIX_LIBRARY "" # deliberately empty
+      INSTALL_PERMISSIONS    "" # deliberately empty
     )
 
     if(add_target_args_MODULE_INTERFACE)
@@ -311,5 +407,8 @@ endfunction()
 function(cxx_test)
   cxx_executable_impl("$${ARGN}")
   ADD_TARGETS_EXTRACT_ARGS("" "" "" $${ARGN})
+  if(add_target_args_INSTALL_WITH)
+    message(SEND_ERROR "cxx_test '$${add_target_args_TARGET}' specifies 'INSTALL_WITH', but tests can't be installed")
+  endif()
   add_test(test.$${add_target_args_TARGET} $${add_target_args_TARGET})
 endfunction()

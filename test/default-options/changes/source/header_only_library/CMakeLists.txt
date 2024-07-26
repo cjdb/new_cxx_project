@@ -3,6 +3,8 @@ cxx_library(
   LIBRARY_TYPE HEADER_ONLY
   HEADER_INTERFACE
     greeter.hpp
+  INSTALL_WITH install-targets
+  INSTALL_PREFIX_INCLUDE header_only
 )
 
 cxx_library(
@@ -20,6 +22,7 @@ cxx_executable(
     hello.cpp
   DEPENDS_ON
     fanciful_header_only
+  INSTALL_WITH install-targets
 )
 
 cxx_test(

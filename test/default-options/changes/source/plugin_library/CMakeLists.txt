@@ -9,12 +9,14 @@ cxx_library(
 cxx_library(
   TARGET greeter_plugin
   LIBRARY_TYPE PLUGIN
-  HEADERS
+  HEADER_INTERFACE
     greeter.hpp
   SOURCES
     greeter.cpp
   COMPILE_OPTIONS
     -Wno-pragmas
+  INSTALL_WITH install-targets
+  INSTALL_PREFIX_INCLUDE plugin
 )
 cxx_test(
   TARGET test_greeter_with_plugin
@@ -37,4 +39,5 @@ cxx_executable(
     plugin_handler
   COMPILE_OPTIONS
     -Wno-pragmas
+  INSTALL_WITH install-targets
 )

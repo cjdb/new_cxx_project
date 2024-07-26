@@ -1,0 +1,58 @@
+name: Basic CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: $${{ matrix.os }}-$${{ matrix.build_type }}-$${{ matrix.toolchain }}
+    runs-on: $${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04]
+        build_type:
+          - Debug
+          - Release
+          - RelWithDebInfo
+        toolchain:
+          - x86_64-unknown-linux-llvm.cmake
+          - x86_64-unknown-linux-gnu.cmake
+      steps:
+        - name: Install tools
+          id: install-tools
+          run: |
+            sudo apt-get update
+            sudo apt-get full-upgrade -y
+            sudo apt-get autoremove -y
+            sudo apt-get remove -y clang-* llvm-*
+            sudo bash -c "$$(wget -O - https://apt.llvm.org/llvm.sh)"
+            sudo apt-get install -y gcc g++ mold cmake
+
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            repository: ${repository}
+            ref: main
+            submodules: recursive
+
+        - name: Format changes
+          id: clang-format
+          run: git clang-format
+            --style=file
+            --extensions c,cc,cpp,cxx,h,hh,hpp,hxx
+            --diff origin/main HEAD
+
+        - name: Configure project
+          id: configure-project
+          run:
+            cmake -S. -Bbuild -GNinja
+              -DCMAKE_BUILD_TYPE=$${{ matrix.build_type }}
+              -DCMAKE_TOOLCHAIN_FILE=$${{ matrix.toolchain }}
+
+        - name: Bulid project
+          id: build-project
+          run: ninja -C build -v
+
+        - name: Run tests
+          id: run-tests
+          run: ctest -j$$(nproc) --output-on-failure --test-dir build

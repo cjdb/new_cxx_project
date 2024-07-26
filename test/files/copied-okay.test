@@ -1,3 +1,6 @@
+RUN: %rm %t/expected
+RUN: cp -r %S/expected %t/expected
+
 RUN: %rm %t/copied_okay
 RUN: %new-project %t/copied_okay --author='copied_okay'
 RUN: pushd %t/copied_okay
@@ -18,5 +21,30 @@ RUN: cp -r %S/vcpkg-changes/* %S/vcpkg-changes/.gitmodules %t/expected/.
 RUN: %new-project %t/copied_okay --author='copied_okay' --package-manager=vcpkg
 RUN: pushd %t/copied_okay
 RUN: rm -r .git vcpkg
+RUN: popd
+RUN: diff -r --unified %t/expected %t/copied_okay
+
+RUN: %rm %t/expected
+RUN: cp -r %S/expected %t/expected
+RUN: cp -r %S/.github %t/expected/.github
+
+RUN: %rm %t/copied_okay
+RUN: %new-project %t/copied_okay --author='copied_okay' --remote=https://github.com/copied_okay/yeah.git
+RUN: pushd %t/copied_okay
+RUN: rm -r .git
+RUN: popd
+RUN: diff -r --unified %t/expected %t/copied_okay
+
+RUN: %rm %t/copied_okay
+RUN: %new-project %t/copied_okay --author='copied_okay' --remote=git://github.com/copied_okay/yeah.git
+RUN: pushd %t/copied_okay
+RUN: rm -r .git
+RUN: popd
+RUN: diff -r --unified %t/expected %t/copied_okay
+
+RUN: %rm %t/copied_okay
+RUN: %new-project %t/copied_okay --author='copied_okay' --remote=git@github.com:copied_okay/yeah.git
+RUN: pushd %t/copied_okay
+RUN: rm -r .git
 RUN: popd
 RUN: diff -r --unified %t/expected %t/copied_okay

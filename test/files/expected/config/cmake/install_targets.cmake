@@ -5,11 +5,10 @@ include(CMakePackageConfigHelpers)
 # doesn't have anything to install.
 #
 # install(
-#   EXPORT copied_okay-installation-target
+#   EXPORT copied_okay-install
 #   FILE copied_okay-config.cmake
 #   NAMESPACE copied_okay::
 #   DESTINATION lib/cmake/copied_okay
-#   CXX_MODULES_DIRECTORY lib/modules/copied_okay
 # )
 
 message(

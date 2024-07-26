@@ -4,6 +4,7 @@
 # See /LICENCE for licence information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 include(FindPackageHandleStandardArgs)
+include(GNUInstallDirs)
 
 if(NOT ${PROJECT_NAME}_BUILD_DOCS)
   return()
@@ -62,5 +63,17 @@ function(sphinx_documentation TARGET_NAME)
   add_custom_target(
     $${TARGET_NAME} ALL
     DEPENDS $${TARGET_DEPENDS}
+  )
+
+  install(
+    DIRECTORY "$${CMAKE_CURRENT_BINARY_DIR}/"
+    TYPE DOC
+    PATTERN ".buildinfo"  EXCLUDE
+    PATTERN ".doctrees"   EXCLUDE
+    PATTERN "_sources"    EXCLUDE
+    PATTERN "objects.inv" EXCLUDE
+    PATTERN "CMakeFiles"  EXCLUDE
+    PATTERN "html.stamp"  EXCLUDE
+    REGEX   ".*[.]cmake$$" EXCLUDE
   )
 endfunction()
