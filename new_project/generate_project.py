@@ -56,6 +56,8 @@ def generate(path: Path, author: str, remote: str, package_manager: str,
     os.makedirs(f'{path}/source', exist_ok=True)
     shutil.copy(f'{import_templates.template_dir}/source/CMakeLists.txt',
                 f'{path}/source/CMakeLists.txt')
+    shutil.copytree(f'{import_templates.template_dir}/.vscode',
+                    f'{path}/.vscode')
 
     generate_repo(project_name=project_name,
                   path=path,
