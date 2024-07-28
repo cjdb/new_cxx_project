@@ -33,6 +33,13 @@ this project's one.
   that are on-disk should be prefixed with `file://`. The default remotes are
     * **vcpkg**: https://github.com/Microsoft/vcpkg.git
 
+## Can you also support &lt;feature&gt;?
+
+Contributions to the project are welcome! Supporting other toolchains, CMake features, build systems,
+package managers, and remotes are certainly things that I'd like to see added. Please open a [feature
+request](https://github.com/cjdb/project_template/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=)
+to discuss your needs.
+
 ## Indices and tables
 
 * {ref}`genindex`
