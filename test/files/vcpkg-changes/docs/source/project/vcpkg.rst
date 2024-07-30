@@ -1,3 +1,9 @@
+..
+  Copyright (c) 2024 Christopher Di Bella
+  Licensed under Creative Commons Attribution-ShareAlike 4.0 International
+  See /LICENCE for licence information.
+  SPDX-License-Identifier: CC BY-SA 4.0
+
 ***********
 Using vcpkg
 ***********

@@ -1,3 +1,9 @@
+<!--
+  Copyright (c) 2024 copied_okay
+  Licensed under Creative Commons Attribution-ShareAlike 4.0 International
+  See /LICENCE for licence information.
+  SPDX-License-Identifier: CC BY-SA 4.0
+-->
 # copied_okay
 
 ```{toctree}

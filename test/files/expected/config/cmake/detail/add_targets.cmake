@@ -1,6 +1,8 @@
-# Copyright (c) Christopher Di Bella.
-# SPDX-License-Identifier: Apache-2.0 with LLVM Exception
-#
+# Copyright Christopher Di Bella
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See /LICENCE for licence information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
 # Defines functions that generate C++ executables, libraries, and tests.
 
 include(GNUInstallDirs)

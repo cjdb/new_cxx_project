@@ -1,6 +1,8 @@
-# Copyright (c) Christopher Di Bella.
-# SPDX-License-Identifier: Apache-2.0 with LLVM Exception
-#
+# Copyright Christopher Di Bella
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See /LICENCE for licence information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+from datetime import datetime
 from git import Repo, Submodule
 from new_project.generate_cmake import generate_cmake
 from pathlib import Path
@@ -74,6 +76,8 @@ def generate_docs(project_name: str, author: str, path: Path,
         template='README.md',
         prefix=path,
         replace={
+            'author': author,
+            'year': datetime.now().year,
             'project_name': project_name,
             'build_systems': 'source/project/cmake',
             'package_managers': '\nsource/project/vcpkg',

@@ -1,3 +1,7 @@
+# Copyright Christopher Di Bella
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See /LICENCE for licence information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
 
 project("copied_okay" C CXX)
