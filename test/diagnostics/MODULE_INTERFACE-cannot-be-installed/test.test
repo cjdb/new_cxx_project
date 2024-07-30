@@ -8,6 +8,6 @@ CHECK:       CMake Error at config/cmake/detail/add_targets.cmake:{{[0-9]+}} (me
 CHECK-NEXT:    cxx_library 'module_interface_tries_to_install' tries to install a module
 CHECK-NEXT:    interface, but tooling isn't mature enough to support installing them yet
 CHECK-NEXT:  Call Stack (most recent call first):
-CHECK-NEXT:    config/cmake/detail/add_targets.cmake:369 (add_scoped_options)
+CHECK-NEXT:    config/cmake/detail/add_targets.cmake:{{[0-9]+}} (add_scoped_options)
 CHECK-NEXT:    source/CMakeLists.txt:1 (cxx_library)
 CHECK:       -- Configuring incomplete, errors occurred!

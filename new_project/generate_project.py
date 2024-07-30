@@ -167,8 +167,7 @@ def generate_repo(project_name: str, path: Path, remote: str,
                               url=package_manager_remote)
         vcpkg.update(recursive=True, init=True, to_latest_revision=True)
 
-    repo.index.add(
-        ['*', '.gitignore', '.clang-format', '.clang-tidy', '.clangd'])
+    repo.index.add(os.listdir(path))
     repo.index.commit(
         'initial commit\n\nThis commit was generated using https://github.com/cjdb/new_cxx_project.'
     )

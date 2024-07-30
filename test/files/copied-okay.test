@@ -1,4 +1,5 @@
 RUN: %rm %t/expected
+RUN: mkdir -p %t
 RUN: cp -r %S/expected %t/expected
 
 RUN: %rm %t/copied_okay
