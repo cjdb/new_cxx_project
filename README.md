@@ -43,7 +43,7 @@ this project's one.
 
 Contributions to the project are welcome! Supporting other toolchains, CMake features, build systems,
 package managers, and remotes are certainly things that I'd like to see added. Please open a [feature
-request](https://github.com/cjdb/project_template/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=)
+request](https://github.com/cjdb/new_cxx_project/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml&title=%3CAdd+a+descriptive+title+here%3E)
 to discuss your needs.
 
 In particular, help with supporting MSVC and delivering updates to previously-generated projects
