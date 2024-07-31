@@ -1,4 +1,4 @@
-name: project_template CI
+name: new_cxx_project CI
 
 on:
   push:
@@ -16,11 +16,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-24.04]
+    env:
+      LLVM_VERSION: 19
 
     steps:
       - name: Install tools
         id: install_tools
-        env: LLVM_VERSION=19
         run: |
           sudo apt-get update
           sudo apt-get dist-upgrade -y
@@ -39,6 +40,7 @@ jobs:
             curl                 \
             gcc-14               \
             g++-14               \
+            libcurl4-openssl-dev \
             libssl-dev           \
             libz3-dev            \
             ninja-build          \
@@ -54,7 +56,8 @@ jobs:
             unzip                \
             wget                 \
             zip
-          sudo apt-add-repository "deb http://apt.llvm.org/noble/ llvm-toolchain-noble main"
+          cmake --version
+          sudo apt-add-repository "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-${LLVM_VERSION} main"
           sudo apt-get update
           sudo apt-get install -y               \
             libllvm${LLVM_VERSION}              \
@@ -89,12 +92,11 @@ jobs:
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-14 100
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-14 100
-          sudo ln -s /usr/bin/cmake /usr/local/bin/cmake
 
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: cjdb/project_template-2.git
+          repository: cjdb/new_cxx_project.git
           ref: main
           submodules: recursive
 
@@ -104,4 +106,5 @@ jobs:
 
       - name: Test
         id: test
-        run: /usr/lib/llvm-18/build/utils/lit/lit.py -sv --timeout=600 -j1 build/test/${{ matrix.current_test }}
+        working-directory: build
+        run: /usr/lib/llvm-${LLVM_VERSION}/build/utils/lit/lit.py -sv test

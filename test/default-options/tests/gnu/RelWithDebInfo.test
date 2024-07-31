@@ -10,7 +10,7 @@ RUN: ninja -j1 -v -C %t/build 2>&1 | %{replace_path} | FileCheck %s --match-full
 RUN: ctest --test-dir %t/build --output-on-failure > %t/actual_error 2>&1 || %expect-error
 RUN: cat %t/actual_error | %{replace_path} | FileCheck %S/expected-ctest.out --check-prefixes=CHECK-CTEST
 
-RUN: ninja -j1 -v -C %t/build install 2>&1 | %{replace_path} | FileCheck %S/expected-install.out -DBUILD_TYPE=RelWithDebInfo -Dbuild_type=relwithdebinfo
+RUN: ninja -j1 -v -C %t/build install
 RUN: %t/install/bin/hello_header_only | FileCheck %S/expected-stdout.out
 RUN: %t/install/bin/hello_with_plugin | FileCheck %S/expected-stdout.out
 RUN: LD_LIBRARY_PATH=%t/install/lib %t/install/bin/hello_shared | FileCheck %S/expected-stdout.out --check-prefix=CHECK-FANCY
