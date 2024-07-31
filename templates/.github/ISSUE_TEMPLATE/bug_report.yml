@@ -1,9 +1,9 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: ''
+description: Create a report to help us improve
+title: 'bug report'
 labels: ['bug']
-assignees:
+assignees: []
 body:
   - type: markdown
     attributes:
@@ -20,24 +20,24 @@ body:
       description:
         Please provide a clear description of your issue. If you got a compile-time error or warning,
         or a runtime error, please include it in your description.
-      validations:
-        required: true
+    validations:
+      required: true
 
   - type: textarea
     id: expected
     attributes:
       label: Expected result
       description: What do you expect to happen?
-      validations:
-        required: true
+    validations:
+      required: true
 
   - type: textarea
     id: repro
     attributes:
       label: Minimal reproduction
       description: Please provide the smallest amount of code possible to reproduce your issue.
-      validations:
-        required: true
+    validations:
+      required: true
 
   - type: markdown
     attributes:
@@ -53,8 +53,8 @@ body:
         - GCC
         - MSVC
         - Other
-      validations:
-        required: true
+    validations:
+      required: true
 
   - type: textarea
     id: compiler_version
@@ -66,8 +66,8 @@ body:
         Target: x86_64-unknown-linux-gnu
         Thread model: posix
         InstalledDir: /usr/bin
-      validations:
-        required: true
+    validations:
+      required: true
 
   - type: input
     id: build_flags
@@ -76,8 +76,8 @@ body:
       description:
         Please paste the complete compiler and linker options. You can get this by passing `-###` to
         the compiler alongside the rest of your options.
-      validations:
-        required: true
+    validations:
+      required: true
 
   - type: input
     id: os
@@ -85,5 +85,5 @@ body:
       label: Operating system
       description: Which operating system are you using?
       placeholder: Ubuntu 20.04
-      validations:
-        required: true
+    validations:
+      required: true
