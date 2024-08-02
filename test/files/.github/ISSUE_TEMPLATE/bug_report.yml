@@ -1,35 +1,89 @@
 ---
-name: Feature request
-description: Suggest an idea for the project
-title: 'feature request'
-labels: ['enhancement']
+name: Bug report
+description: Create a report to help us improve
+title: 'bug report'
+labels: ['bug']
 assignees: []
 body:
   - type: markdown
     attributes:
       value: |
-        ## Feature request
+        Thank you for taking the time out to file a bug report! To help us triage this as quickly as
+        possible, please familiarise yourself with our [bug reporting documentation](../../docs/user/reporting_bugs.rst).
+
+        ## Bug details
 
   - type: textarea
     id: description
     attributes:
-      label: Is your feature request related to a problem? Please describe
+      label: Bug description
       description:
-        A clear and concise description of the problem (e.g. I'm always frustrated when...)
+        Please provide a clear description of your issue. If you got a compile-time error or warning,
+        or a runtime error, please include it in your description.
     validations:
       required: true
 
   - type: textarea
-    id: proposed_solution
+    id: expected
     attributes:
-      label: Describe the solution you'd like
-      description: A clear and concise description of what you would like to happen.
+      label: Expected result
+      description: What do you expect to happen?
     validations:
       required: true
 
   - type: textarea
-    id: alternatives
+    id: repro
     attributes:
-      label: Describe any alternatives that you've considered
+      label: Minimal reproduction
+      description: Please provide the smallest amount of code possible to reproduce your issue.
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: '## Toolchain information'
+
+  - type: dropdown
+    id: compiler
+    attributes:
+      label: Which compiler are you experiencing this on?
+      multiple: false
+      options:
+        - Clang
+        - GCC
+        - MSVC
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: compiler_version
+    attributes:
+      label: What version of the compiler are you using?
+      placeholder: |
+        $ clang --version
+        clang version 16.0.0
+        Target: x86_64-unknown-linux-gnu
+        Thread model: posix
+        InstalledDir: /usr/bin
+    validations:
+      required: true
+
+  - type: input
+    id: build_flags
+    attributes:
+      label: Build options
+      description:
+        Please paste the complete compiler and linker options. You can get this by passing `-###` to
+        the compiler alongside the rest of your options.
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      description: Which operating system are you using?
+      placeholder: Ubuntu 20.04
     validations:
       required: true
