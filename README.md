@@ -15,6 +15,8 @@ with your project.
 
 LICENCE
 CODE_OF_CONDUCT
+source/generated_files/cmake
+source/generated_files/vcpkg
 ```
 
 ## Generated files
@@ -65,15 +67,45 @@ the CMake components to support vcpkg, and the documentation.
 
 ## Getting started
 
-This project is fairly straightforward to use. Most projects can probably get away with running the
+1. This project is fairly straightforward to use. Most projects can probably get away with running the
 following:
+  ```sh
+  $ ./new_cxx_project.py /tmp/hello_world --author='Your name'
+  ```
+  This generates a project called `hello_world` in `/tmp/hello_world`.
 
-```sh
-$ ./new_cxx_project.py /path/to/project_name --author='Your name'
-```
+2. Next, run this to install a few dependencies:
+  ```sh
+  $ python3 -m venv /tmp/venv
+  $ /tmp/venv/bin/pip install -r /tmp/hello_world/docs/requirements.txt
+  ```
+3. Create a file called `/tmp/hello_world/source/hello.cpp`:
+  ```cpp
+  #include <print>
 
-This will generate a C++23 project using CMake, and also give you a documentation setup similar to
-this project's one.
+  int main()
+  {
+    std::println("Hello, world!");
+  }
+  ```
+4. Edit `/tmp/hello_world/source/CMakeLists.txt`:
+  ```cmake
+  cxx_executable(
+    TARGET hello
+    SOURCES hello.cpp
+  )
+  ```
+5. Run `cd /tmp/hello_world`.
+6. Run **one** of the following:
+  ```sh
+  # If you have the LLVM toolchain installed (Clang, libc++, and friends)
+  $ cmake -GNinja -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="$PWD/config/cmake/toolchains/x86_64-linux-unknown-llvm.cmake"
+  # If you have the GNU toolchain installed (GCC and friends)
+  $ cmake -GNinja -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="$PWD/config/cmake/toolchains/x86_64-linux-unknown-gnu.cmake"
+  ```
+7. Now run `ninja -C build`.
+8. Finally, run `build/source/hello`. You should see `Hello, world!` output to screen.
+9. Congrats! That's your first project done :)
 
 ## Options
 
