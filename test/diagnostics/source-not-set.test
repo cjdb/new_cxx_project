@@ -1,5 +1,5 @@
 RUN: %rm %t/source_not_set
-RUN: %new-project %t/source_not_set --author='new-c++-project Test Suite' --package-manager=none
+RUN: %new-project %t/source_not_set --author='new_cxx_project Test Suite' --package-manager=none
 
 RUN: echo 'cxx_executable(TARGET hello)' > %t/source_not_set/source/CMakeLists.txt
 RUN: cmake -S %t/source_not_set -B %t/build -GNinja -DCMAKE_BUILD_TYPE=Debug >%t/actual_error 2>&1 || %expect-error

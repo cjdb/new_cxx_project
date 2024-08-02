@@ -1,5 +1,5 @@
 RUN: %rm %t/gnu_toolchain
-RUN: %new-project %t/gnu_toolchain --author='new-c++-project Test Suite' --package-manager=vcpkg --package-manager-remote=file://%S/../../../../vcpkg
+RUN: %new-project %t/gnu_toolchain --author='new_cxx_project Test Suite' --package-manager=vcpkg --package-manager-remote=file://%S/../../../../vcpkg
 RUN: cp -r %S/../../changes/* %t/gnu_toolchain/
 RUN: cp -r %S/../../asan-only-changes/source/asan %t/gnu_toolchain/source/.
 RUN: cat %S/../../asan-only-changes/source/CMakeLists.txt >> %t/gnu_toolchain/source/CMakeLists.txt

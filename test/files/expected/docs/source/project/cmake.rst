@@ -17,7 +17,7 @@ Config options
 Default config options
 ----------------------
 
-:code:`new-c++-project.py` provides the following config options for all C++ projects.
+:code:`new_cxx_project.py` provides the following config options for all C++ projects.
 
 .. option:: COPIED_OKAY_BUILD_DOCS
 
