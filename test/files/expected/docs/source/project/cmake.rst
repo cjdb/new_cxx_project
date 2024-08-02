@@ -30,13 +30,13 @@ Default config options
 Project-specific config options
 -------------------------------
 
-Project-specific config options should be added to :code:`config/cmake/handle_options.cmake`, and
+Project-specific config options should be added to :code:`config/cmake/install_options.cmake`, and
 documented here.
 
 Packages
 ========
 
-Project-specific package dependencies should be added to :code:`config/cmake/add_packages.cmake`, and
+Project-specific package dependencies should be added to :code:`config/cmake/import_packages.cmake`, and
 documented here.
 
 Toolchain files
@@ -228,7 +228,17 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
   .. option:: INSTALL_WITH:STRING
 
     Installs the executable to :code:`${CMAKE_INSTALL_PREFIX}/bin` when :code:`install_target` is
-    invoked as a build target.
+    invoked as an install step. :code:`install_target` must be defined in :code:`config/cmake/install_targets.cmake`.
+
+    .. code-block:: cmake
+      :caption: This executable will be installed to :code:`${CMAKE_INSTALL_PREFIX}/bin` when
+                :code:`install-targets` is executed as an install step.
+
+      cxx_executable(
+        TARGET hello_moon
+        SOURCES hello_moon.cpp
+        INSTALL_WITH install-targets
+      )
 
   .. option:: INSTALL_PERMISSIONS:LIST[STRING]
 
@@ -238,6 +248,18 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
     :code:`WORLD_EXECUTE`.
 
     Defaults to :code:`OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE`.
+
+    .. code-block:: cmake
+      :caption: The previous case installed :code:`hello_moon` with the default permissions. We
+                install with some more restricted permissions this time.
+
+      cxx_executable(
+        TARGET hello_moon
+        SOURCES hello_moon.cpp
+        INSTALL_WITH install-targets
+        INSTALL_PERMISSIONS
+          OWNER_READ OWNER_WRITE OWNER_EXECUTE
+      )
 
 .. function::
   cxx_library(\
@@ -438,22 +460,66 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
   .. option:: INSTALL_WITH:STRING
 
     Installs header interfaces to :code:`${CMAKE_INSTALL_PREFIX}/include`, and static archives,
-    shared objects, and plugins to :code:`${CMAKE_INSTALL_PREFIX}/lib` when :code:`install_target`
-    is invoked as a build target.
+    shared objects, and plugins to :code:`${CMAKE_INSTALL_PREFIX}/lib` when :code:`install-targets`
+    is executed as an install step.
 
     .. note::
 
-      Module interfaces can't be installed at the moment.
+      Module interfaces can't be installed at the moment due to technical limitations.
+
+    .. code-block:: cmake
+      :caption: The precompiled binary component of this library will be installed to
+                :code:`${CMAKE_INSTALL_PREFIX}/lib`, and the headers will be installed to
+                :code:`${CMAKE_INSTALL_PREFIX}/include` when :code:`install-targets` is executed as
+                an install step.
+
+      cxx_library(
+        TARGET greeter
+        LIBRARY_TYPE STATIC
+        HEADERS greeter.hpp
+        SOURCES greeter.cpp
+        INSTALL_WITH install-targets
+      )
 
   .. option:: INSTALL_PREFIX_INCLUDE:STRING
 
     Tells the build system to install headers to the path in
     :code:`${CMAKE_INSTALL_PREFIX}/include/${INSTALL_PREFIX_INCLUDE}`.
 
+    .. code-block:: cmake
+      :caption: The precompiled binary component of this library will be installed to
+                :code:`${CMAKE_INSTALL_PREFIX}/lib`, and **the headers will be installed to
+                :code:`${CMAKE_INSTALL_PREFIX}/include/greeter`** when :code:`install-targets` is
+                executed as an install step.
+
+      cxx_library(
+        TARGET greeter
+        LIBRARY_TYPE STATIC
+        HEADERS greeter.hpp
+        SOURCES greeter.cpp
+        INSTALL_WITH install-targets
+        INSTALL_PREFIX_INCLUDE greeter
+      )
+
   .. option:: INSTALL_PREFIX_LIBRARY:STRING
 
     Tells the build system to install static archives, shared objects, and plugins to the path in
     :code:`${CMAKE_INSTALL_PREFIX}/include/${INSTALL_PREFIX_LIBRARY}`.
+
+    .. code-block:: cmake
+      :caption: **The precompiled binary component of this library will be installed to
+                :code:`${CMAKE_INSTALL_PREFIX}/lib/greeter`**, and the headers will be installed to
+                :code:`${CMAKE_INSTALL_PREFIX}/include/greeter` when :code:`install-targets` is
+                executed as an install step.
+
+      cxx_library(
+        TARGET greeter
+        LIBRARY_TYPE STATIC
+        HEADERS greeter.hpp
+        SOURCES greeter.cpp
+        INSTALL_WITH install-targets
+        INSTALL_PREFIX_INCLUDE greeter
+      )
 
   .. option:: INSTALL_PERMISSIONS:LIST[STRING]
 
@@ -464,6 +530,21 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
 
     Defaults to :code:`OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ`.
 
+    .. code-block:: cmake
+      :caption: The previous case installed :code:`greeter` with the default permissions. We install
+                with some more restricted permissions this time.
+
+      cxx_library(
+        TARGET greeter
+        LIBRARY_TYPE shared
+        HEADERS greeter.hpp
+        SOURCES greeter.cpp
+        INSTALL_WITH install-targets
+        INSTALL_PERMISSIONS
+          OWNER_READ OWNER_WRITE
+          GROUP_READ
+      )
+
 .. function:: cxx_test
 
   A wrapper around :func:`cxx_executable` to register the executable with CTest. The parameters are
@@ -471,3 +552,23 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
 
   The test will be named :code:`test.$TARGET_NAME`, where :code:`$TARGET_NAME` is a placeholder for
   what you passed to :code:`TARGET`.
+
+Installing binaries
+===================
+
+The named parameter :code:`INSTALL_WITH install-targets` indicates to a :func:`cxx_executable` or
+:func:`cxx_library` that you intend to install this target. In order to do so, you'll first need to
+define :code:`install-targets` as something to install. You do this by adding an :code:`install(EXPORT)`
+to :code:`config/cmake/install_targets.cmake`, like the one that's below.
+
+.. code-block:: cmake
+
+  install(
+    EXPORT copied_okay-install
+    FILE copied_okay-config.cmake
+    NAMESPACE copied_okay::
+    DESTINATION lib/cmake/copied_okay
+  )
+
+Your project will automatically warn that an installation target hasn't been created so that you
+don't forget to do this.
