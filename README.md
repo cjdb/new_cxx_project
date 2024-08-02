@@ -4,9 +4,9 @@
   See /LICENCE for licence information.
   SPDX-License-Identifier: CC BY-SA 4.0
 -->
-# new-c++-project
+# new_cxx_project
 
-Welcome to new-c++-project! This is a project template generator for C++ projects. Its primary
+Welcome to new_cxx_project! This is a project template generator for C++ projects. Its primary
 purpose is to reduce the amount of boilerplate that you need to interact with in order to get started
 with your project.
 
