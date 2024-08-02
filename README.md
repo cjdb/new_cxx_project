@@ -17,6 +17,52 @@ LICENCE
 CODE_OF_CONDUCT
 ```
 
+## Generated files
+
+new_cxx_project currently generates a project with support for the following tools:
+
+* Git
+* GitHub (optional)
+* [Sphinx](https://https://www.sphinx-doc.org) (a docmuentation tool)
+* CMake
+* [vcpkg](https://vcpkg.io) (a C++ package manager, optional)
+
+### Git
+
+By default, the project will start with a single commit, containing all of the generated files.
+
+### GitHub
+
+If the project's remote either starts with `https://github.com/` or `git@github.com:`, then the
+project will contain files for opening pull requests, bug reports, feature requests, and a GitHub
+Action for [continuous integration](https://en.wikipedia.org/wiki/Continuous_integration).
+
+### Sphinx
+
+Sphinx is a documentation tool. We generate a `docs` directory that is built alongside your project.
+Sphinx supports both [Markdown](https://mystmd.org) and [reStructured Text](https://docutils.sourceforge.io/rst.html).
+The readme, licence, and code of conduct files are all drafted in Markdown, but your other files can
+be written in reStructured Text.
+
+### CMake
+
+new_cxx_project largely exists to generate CMake files that you need to write (but probably don't)
+want to. The CMake library that's generated is intended to simplify your development process, so that
+you spend less time writing CMake, and more time working on your project.
+
+:::{seealso}
+<project:source/generated_files/cmake.rst>
+:::
+
+### vcpkg
+
+new_cxx_project can optionally support for vcpkg. This includes adding it as a submodule, adjusting
+the CMake components to support vcpkg, and the documentation.
+
+:::{seealso}
+<project:source/generated_files/vcpkg.rst>
+:::
+
 ## Getting started
 
 This project is fairly straightforward to use. Most projects can probably get away with running the
