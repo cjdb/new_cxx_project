@@ -1,7 +1,7 @@
 ---
-name: Bug report
-description: Create a report to help us improve
-title: '<Add a descriptive title here>'
+name: Toolchain bug report
+description: File a bug report regarding how we use the C++ tools (do not use for C++ toolchain bugs)
+title: 'toolchain'
 labels: ['bug']
 assignees: ['@cjdb']
 body:
