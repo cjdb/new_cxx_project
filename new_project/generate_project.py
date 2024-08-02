@@ -138,6 +138,10 @@ def generate_docs(project_name: str, author: str, path: Path,
     docs = f'{path}/docs'
     shutil.copytree(f'{import_templates.template_dir}/docs/_templates',
                     f'{docs}/_templates')
+    shutil.copy(f'{import_templates.template_dir}/docs/requirements.in',
+                f'{docs}/requirements.in')
+    shutil.copy(f'{import_templates.template_dir}/docs/requirements.txt',
+                f'{docs}/requirements.txt')
     os.symlink(f'../README.md', f'{docs}/index.md')
     os.symlink(f'../LICENCE', f'{docs}/LICENCE.md')
     os.symlink(f'../CODE_OF_CONDUCT.md', f'{docs}/CODE_OF_CONDUCT.md')
