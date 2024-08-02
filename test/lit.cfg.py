@@ -17,7 +17,7 @@ from lit.llvm.subst import ToolSubst, FindTool
 # Configuration file for the 'lit' test runner.
 
 # name: the name of this test suite
-config.name = 'new-c++-project'
+config.name = 'new_cxx_project'
 
 # testFormat: The test format used to use to interpret tests.
 #

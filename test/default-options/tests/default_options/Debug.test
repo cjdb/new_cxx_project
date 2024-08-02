@@ -1,5 +1,5 @@
 RUN: %rm %t/default_options
-RUN: %new-project %t/default_options --author='new-c++-project Test Suite' --package-manager=vcpkg --package-manager-remote=file://%S/../../../../vcpkg
+RUN: %new-project %t/default_options --author='new_cxx_project Test Suite' --package-manager=vcpkg --package-manager-remote=file://%S/../../../../vcpkg
 RUN: cp -r %S/../../changes/* %t/default_options/
 
 RUN: %rm %t/build %t/install

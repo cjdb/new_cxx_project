@@ -1,49 +1,49 @@
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=https://github.com/missing/dot_git >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=https://github.com/missing/dot_git >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=https://github.com/missing/dot_git %s
 
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=git://github.com/missing/dot_git >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=git://github.com/missing/dot_git >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=git://github.com/missing/dot_git %s
 
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=git@github.com:missing/dot_git >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=git@github.com:missing/dot_git >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=git@github.com:missing/dot_git %s
 
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=http://github.com/is/http.git >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=http://github.com/is/http.git >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=http://github.com/is/http.git %s
 
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=you@github.com:user_not/git.git >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=you@github.com:user_not/git.git >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=you@github.com:user_not/git.git %s
 
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=git@github.com/slash/not_colon.git >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=git@github.com/slash/not_colon.git >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=git@github.com/slash/not_colon.git %s
 
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=https://github.com/no_user.git >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=https://github.com/no_user.git >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=https://github.com/no_user.git %s
 
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=git://github.com/no_user.git >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=git://github.com/no_user.git >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=git://github.com/no_user.git %s
 
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=git@github.com:no_user.git >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=git@github.com:no_user.git >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=git@github.com:no_user.git %s
 
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=https://github.com/no_repo >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=https://github.com/no_repo >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=https://github.com/no_repo %s
 
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=git://github.com/no_repo >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=git://github.com/no_repo >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=git://github.com/no_repo %s
 
 RUN: %rm %t
-RUN: %new-project %t/bad_remote --author='new-c++-project Test Suite' --remote=git@github.com:no_repo >%t.actual_error 2>&1 || %expect-error
+RUN: %new-project %t/bad_remote --author='new_cxx_project Test Suite' --remote=git@github.com:no_repo >%t.actual_error 2>&1 || %expect-error
 RUN: FileCheck --input-file=%t.actual_error -DREMOTE=git@github.com:no_repo %s
 
 CHECK:      error: remote '[[REMOTE]]' contains 'github.com', but it looks incorrect
