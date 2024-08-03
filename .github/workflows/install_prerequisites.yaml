@@ -1,0 +1,71 @@
+name: Test install_prerequisites.py
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - debian-latest
+          - ubuntu-latest
+          - archlinux
+          - fedora-latest
+          - opensuse/tumbleweed
+    env:
+      LLVM_VERSION: 19
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: cjdb/new_cxx_project.git
+          ref: main
+          submodules: recursive
+      - name: Install (apt)
+        id: install_apt
+        if: matrix.os == 'debian-latest' || matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get dist-upgrade -y
+          sudo apt-get update
+          sudo apt-get install -y software-properties-common
+          sudo add-apt-repository universe
+          sudo apt-get update
+          sudo apt-get install -y gcc g++ wget lsb-release
+          yes | sudo ./install_prerequisites.py
+      - name: Install (pacman)
+        id: install_pacman
+        if: matrix.os == 'archlinux'
+        run: |
+          yes | sudo pacman -Syu python3
+          yes | sudo ./install_prerequisites.py
+      - name: Install (dnf)
+        id: install_dnf
+        if: matrix.os == 'fedora-latest'
+        run: |
+          yes | sudo dnf update
+          yes | sudo ./install_prerequisites.py
+      - name: Install (openSUSE Tumbleweed)
+        id: install_opensuse_leap
+        if: matrix.os == 'opensuse/tumbleweed'
+        run: |
+          yes | sudo zypper update
+          yes | sudo zypper install python311
+          yes | sudo ./install_prerequisites.py
+      - name: Generate
+        id: generate
+        run:
+          ../new_cxx_project.py
+            --author new_cxx_project
+            --package-manager=vcpkg
+            --remote=https://github.com/new_cxx_project/test.git
+            /tmp/test
+      - name: Configure
+        id: configure
+        run: cmake -GNinja -S/tmp/test -B/tmp/build -DCMAKE_BUILD_TYPE=Debug
+      - name: Build
+        id: build
+        run: ninja -C /tmp/build

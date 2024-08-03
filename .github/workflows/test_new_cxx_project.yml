@@ -1,4 +1,4 @@
-name: new_cxx_project CI
+name: Test new_cxx_project
 
 on:
   push:
@@ -20,6 +20,13 @@ jobs:
       LLVM_VERSION: 19
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: cjdb/new_cxx_project.git
+          ref: main
+          submodules: recursive
+
       - name: Install tools
         id: install_tools
         run: |
@@ -29,34 +36,11 @@ jobs:
           sudo apt-get install -y software-properties-common
           sudo add-apt-repository universe
           sudo apt-get update
-          sudo apt-get install -y wget lsb-release
+          sudo apt-get install -y gcc-14 g++-14 wget lsb-release
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
           sudo apt-get remove -y '*clang*' '*llvm*'
           sudo apt-get autoremove -y
-          sudo apt-get install -y     \
-            build-essential           \
-            bzip2                     \
-            cmake                     \
-            curl                      \
-            gcc-14                    \
-            g++-14                    \
-            libcurl4-openssl-dev      \
-            libssl-dev                \
-            libz3-dev                 \
-            ninja-build               \
-            pkg-config                \
-            python-is-python3         \
-            python3                   \
-            python3-git               \
-            python3-myst-parser       \
-            python3-pip               \
-            python3-psutil            \
-            python3-sphinx            \
-            python3-sphinx-book-theme \
-            tar                       \
-            unzip                     \
-            wget                      \
-            zip
+          yes | sudo python3 install_prerequisites.py
           sudo apt-add-repository "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-${LLVM_VERSION} main"
           sudo apt-get update
           sudo apt-get install -y               \
@@ -92,13 +76,6 @@ jobs:
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-14 100
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-14 100
-
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          repository: cjdb/new_cxx_project.git
-          ref: main
-          submodules: recursive
 
       - name: Configure
         id: configure
