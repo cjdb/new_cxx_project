@@ -119,11 +119,7 @@ class DNF(PackageManager):
 
 
 class ZYpp(PackageManager):
-    def __init__(self, distro):
-        self.distro = distro
-
     def install_prerequisites(self):
-        print(self.distro)
         subprocess.run(
             [
                 "zypper",
@@ -186,7 +182,7 @@ def detect_platform():
             return Apt()
 
         if "suse" in id:
-            return ZYpp(release_info["ID"])
+            return ZYpp()
 
     if "ID" in release_info:
         id = release_info["ID"]
@@ -200,9 +196,9 @@ def detect_platform():
 
 
 def main():
-    if sys.version_info < (3, 11):
+    if sys.version_info < (3, 10):
         print(
-            f"python version is {sys.version_info.major}.{sys.version_info.minor}; needs at least 3.11",
+            f"python version is {sys.version_info.major}.{sys.version_info.minor}; install_prerequisites.py needs at least 3.10",
             file=sys.stderr,
         )
         sys.exit(1)
