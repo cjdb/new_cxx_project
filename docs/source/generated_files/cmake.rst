@@ -201,7 +201,7 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
         TARGET hello
         SOURCES hello.cpp
         HEADERS
-          "$${PROJECT_SOURCE_DIR}/include/greeting.hpp"
+          "${PROJECT_SOURCE_DIR}/include/greeting.hpp"
       )
 
   .. option:: LINK_OPTIONS:LIST[STRING]
@@ -233,11 +233,11 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
 
   .. option:: INSTALL_WITH:STRING
 
-    Installs the executable to :code:`$${CMAKE_INSTALL_PREFIX}/bin` when :code:`install_target` is
+    Installs the executable to :code:`${CMAKE_INSTALL_PREFIX}/bin` when :code:`install_target` is
     invoked as an install step. :code:`install_target` must be defined in :code:`config/cmake/install_targets.cmake`.
 
     .. code-block:: cmake
-      :caption: This executable will be installed to :code:`$${CMAKE_INSTALL_PREFIX}/bin` when
+      :caption: This executable will be installed to :code:`${CMAKE_INSTALL_PREFIX}/bin` when
                 :code:`install-targets` is executed as an install step.
 
       cxx_executable(
@@ -320,8 +320,8 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
             TARGET greeter
             LIBRARY_TYPE STATIC
             HEADER_INTERFACE
-              "$${PROJECT_SOURCE_DIR}/include/greeter.hpp"
-              "$${PROJECT_SOURCE_DIR}/include/strings.hpp"
+              "${PROJECT_SOURCE_DIR}/include/greeter.hpp"
+              "${PROJECT_SOURCE_DIR}/include/strings.hpp"
             SOURCES
               greeter.cpp
               strings.cpp
@@ -344,8 +344,8 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
             TARGET greeter
             LIBRARY_TYPE SHARED
             HEADER_INTERFACE
-              "$${PROJECT_SOURCE_DIR}/include/greeter.hpp"
-              "$${PROJECT_SOURCE_DIR}/include/strings.hpp"
+              "${PROJECT_SOURCE_DIR}/include/greeter.hpp"
+              "${PROJECT_SOURCE_DIR}/include/strings.hpp"
             SOURCES
               greeter.cpp
               strings.cpp
@@ -390,8 +390,8 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
             TARGET greeter
             LIBRARY_TYPE OBJECT
             HEADER_INTERFACE
-              "$${PROJECT_SOURCE_DIR}/include/greeter.hpp"
-              "$${PROJECT_SOURCE_DIR}/include/strings.hpp"
+              "${PROJECT_SOURCE_DIR}/include/greeter.hpp"
+              "${PROJECT_SOURCE_DIR}/include/strings.hpp"
             SOURCES
               greeter.cpp
               strings.cpp
@@ -434,9 +434,9 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
         TARGET hello
         LIBRARY_TYPE OBJECT
         HEADER_INTERFACE
-          "$${PROJECT_SOURCE_DIR}/include/greeter.hpp"
+          "${PROJECT_SOURCE_DIR}/include/greeter.hpp"
         HEADERS
-          "$${PROJECT_SOURCE_DIR}/source/strings.hpp"
+          "${PROJECT_SOURCE_DIR}/source/strings.hpp"
         SOURCES
           greeter.cpp
           strings.cpp
@@ -465,8 +465,8 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
 
   .. option:: INSTALL_WITH:STRING
 
-    Installs header interfaces to :code:`$${CMAKE_INSTALL_PREFIX}/include`, and static archives,
-    shared objects, and plugins to :code:`$${CMAKE_INSTALL_PREFIX}/lib` when :code:`install-targets`
+    Installs header interfaces to :code:`${CMAKE_INSTALL_PREFIX}/include`, and static archives,
+    shared objects, and plugins to :code:`${CMAKE_INSTALL_PREFIX}/lib` when :code:`install-targets`
     is executed as an install step.
 
     .. note::
@@ -475,8 +475,8 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
 
     .. code-block:: cmake
       :caption: The precompiled binary component of this library will be installed to
-                :code:`$${CMAKE_INSTALL_PREFIX}/lib`, and the headers will be installed to
-                :code:`$${CMAKE_INSTALL_PREFIX}/include` when :code:`install-targets` is executed as
+                :code:`${CMAKE_INSTALL_PREFIX}/lib`, and the headers will be installed to
+                :code:`${CMAKE_INSTALL_PREFIX}/include` when :code:`install-targets` is executed as
                 an install step.
 
       cxx_library(
@@ -490,12 +490,12 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
   .. option:: INSTALL_PREFIX_INCLUDE:STRING
 
     Tells the build system to install headers to the path in
-    :code:`$${CMAKE_INSTALL_PREFIX}/include/$${INSTALL_PREFIX_INCLUDE}`.
+    :code:`${CMAKE_INSTALL_PREFIX}/include/${INSTALL_PREFIX_INCLUDE}`.
 
     .. code-block:: cmake
       :caption: The precompiled binary component of this library will be installed to
-                :code:`$${CMAKE_INSTALL_PREFIX}/lib`, and **the headers will be installed to
-                :code:`$${CMAKE_INSTALL_PREFIX}/include/greeter`** when :code:`install-targets` is
+                :code:`${CMAKE_INSTALL_PREFIX}/lib`, and **the headers will be installed to
+                :code:`${CMAKE_INSTALL_PREFIX}/include/greeter`** when :code:`install-targets` is
                 executed as an install step.
 
       cxx_library(
@@ -510,12 +510,12 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
   .. option:: INSTALL_PREFIX_LIBRARY:STRING
 
     Tells the build system to install static archives, shared objects, and plugins to the path in
-    :code:`$${CMAKE_INSTALL_PREFIX}/include/$${INSTALL_PREFIX_LIBRARY}`.
+    :code:`${CMAKE_INSTALL_PREFIX}/include/${INSTALL_PREFIX_LIBRARY}`.
 
     .. code-block:: cmake
       :caption: **The precompiled binary component of this library will be installed to
-                :code:`$${CMAKE_INSTALL_PREFIX}/lib/greeter`**, and the headers will be installed to
-                :code:`$${CMAKE_INSTALL_PREFIX}/include/greeter` when :code:`install-targets` is
+                :code:`${CMAKE_INSTALL_PREFIX}/lib/greeter`**, and the headers will be installed to
+                :code:`${CMAKE_INSTALL_PREFIX}/include/greeter` when :code:`install-targets` is
                 executed as an install step.
 
       cxx_library(
@@ -556,7 +556,7 @@ the :code:`HEADER_INTERFACE` named parameter (:func:`cxx_library` only), or the
   A wrapper around :func:`cxx_executable` to register the executable with CTest. The parameters are
   identical, excluding install options.
 
-  The test will be named :code:`test.$$TARGET_NAME`, where :code:`$$TARGET_NAME` is a placeholder for
+  The test will be named :code:`test.$TARGET_NAME`, where :code:`$TARGET_NAME` is a placeholder for
   what you passed to :code:`TARGET`.
 
 Installing binaries

@@ -37,7 +37,7 @@ just configure the project using the options documented in :doc:`cmake`. You can
   :caption: An example showing how vcpkg can be used. The ``-DVCPKG_INSTALL_OPTIONS='--clean-after-build'``
             option is optional, and tells vcpkg to clean its build cache after all packages are installed.
 
-  $$ cmake -S. -Bbuild -GNinja                                                                     \
+  $ cmake -S. -Bbuild -GNinja                                                                     \
       -DCMAKE_BUILD_TYPE=Debug                                                                    \
       -DTOOLCHAIN_FILE='/path/to/project/config/cmake/toolchains/x86_64-unknown-linux-llvm.cmake' \
       -DVCPKG_INSTALL_OPTIONS='--clean-after-build'                                               \
