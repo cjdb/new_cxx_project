@@ -25,7 +25,7 @@ new_cxx_project currently generates a project with support for the following too
 
 * Git
 * GitHub (optional)
-* [Sphinx](https://https://www.sphinx-doc.org) (a docmuentation tool)
+* [Sphinx](https://https://www.sphinx-doc.org) (a documentation tool)
 * CMake
 * [vcpkg](https://vcpkg.io) (a C++ package manager, optional)
 
