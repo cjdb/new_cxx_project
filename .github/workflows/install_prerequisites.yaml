@@ -9,12 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - debian-latest
-          - ubuntu-latest
-          - archlinux
-          - fedora-latest
-          - opensuse/tumbleweed
+        os: [ubuntu-24.04, macos-14]
     env:
       LLVM_VERSION: 19
     steps:
@@ -24,48 +19,65 @@ jobs:
           repository: cjdb/new_cxx_project.git
           ref: main
           submodules: recursive
-      - name: Install (apt)
-        id: install_apt
-        if: matrix.os == 'debian-latest' || matrix.os == 'ubuntu-latest'
+      - name: Get Docker
+        id: get_docker
+        if: matrix.os == 'ubuntu-24.04'
         run: |
+          # Add Docker's official GPG key:
           sudo apt-get update
-          sudo apt-get dist-upgrade -y
+          sudo apt-get install ca-certificates curl
+          sudo install -m 0755 -d /etc/apt/keyrings
+          sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+          sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+          # Add the repository to Apt sources:
+          echo \
+            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+            $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+            sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
           sudo apt-get update
-          sudo apt-get install -y software-properties-common
-          sudo add-apt-repository universe
-          sudo apt-get update
-          sudo apt-get install -y gcc g++ wget lsb-release
-          yes | sudo ./install_prerequisites.py
-      - name: Install (pacman)
-        id: install_pacman
-        if: matrix.os == 'archlinux'
-        run: |
-          yes | sudo pacman -Syu python3
-          yes | sudo ./install_prerequisites.py
-      - name: Install (dnf)
-        id: install_dnf
-        if: matrix.os == 'fedora-latest'
-        run: |
-          yes | sudo dnf update
-          yes | sudo ./install_prerequisites.py
-      - name: Install (openSUSE Tumbleweed)
-        id: install_opensuse_leap
-        if: matrix.os == 'opensuse/tumbleweed'
-        run: |
-          yes | sudo zypper update
-          yes | sudo zypper install python311
-          yes | sudo ./install_prerequisites.py
-      - name: Generate
-        id: generate
+          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+          sudo docker run hello-world
+      - name: Test apt
+        id: apt
+        if: matrix.os == 'ubuntu-24.04'
         run:
-          ../new_cxx_project.py
-            --author new_cxx_project
-            --package-manager=vcpkg
-            --remote=https://github.com/new_cxx_project/test.git
-            /tmp/test
-      - name: Configure
-        id: configure
-        run: cmake -GNinja -S/tmp/test -B/tmp/build -DCMAKE_BUILD_TYPE=Debug
-      - name: Build
-        id: build
-        run: ninja -C /tmp/build
+          sudo docker run --network=host -t -v $PWD:$HOME -w $HOME --rm ubuntu bash -c
+            'apt-get update &&
+             apt-get upgrade -y &&
+             echo 11 33 | apt-get install tzdata &&
+             apt-get install -y software-properties-common &&
+             apt-get install -y gcc g++ wget lsb-release &&
+             yes | ./install_prerequisites.py &&
+             ./new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git /tmp/test &&
+             cmake -GNinja -S/tmp/test -B/tmp/build -DCMAKE_BUILD_TYPE=Debug &&
+             ninja -C /tmp/build'
+      - name: Test pacman
+        id: pacman
+        if: matrix.os == 'ubuntu-24.04'
+        run:
+          sudo docker run --network=host -t -v $PWD:$HOME -w $HOME --rm archlinux bash -c
+            'yes | pacman -Syu python3 &&
+             yes | ./install_prerequisites.py &&
+             ./new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git /tmp/test &&
+             cmake -GNinja -S/tmp/test -B/tmp/build -DCMAKE_BUILD_TYPE=Debug &&
+             ninja -C /tmp/build'
+      - name: Test dnf
+        id: dnf
+        if: matrix.os == 'ubuntu-24.04'
+        run:
+          sudo docker run --network=host -t -v $PWD:$HOME -w $HOME --rm fedora bash -c
+            'yes | dnf update &&
+             yes | ./install_prerequisites.py &&
+             ./new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git /tmp/test &&
+             cmake -GNinja -S/tmp/test -B/tmp/build -DCMAKE_BUILD_TYPE=Debug &&
+             ninja -C /tmp/build'
+      - name: Test Homebrew
+        id: homebrew
+        if: matrix.os == 'macos-14'
+        run: |
+          ./install_prerequisites.py
+          export PATH="$HOME/.new_cxx_project/bin:$PATH"
+          ./new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git $HOME/test
+          cmake -GNinja -S $HOME/test -B $HOME/test/build -DCMAKE_BUILD_TYPE=Debug
+          ninja -C $HOME/test/build
