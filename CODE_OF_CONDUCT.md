@@ -28,7 +28,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 ## Guidelines
 
-The ${project_name} community works to be welcoming and kind among itself and to others,
+The new_cxx_project community works to be welcoming and kind among itself and to others,
 with a deep commitment to psychological safety, and we want to ensure that
 doesn’t change as we grow and evolve. To that end, we have a few ground rules
 that we ask all community members to adhere to:
@@ -44,7 +44,7 @@ that we ask all community members to adhere to:
 This list isn't exhaustive. Rather, take it in the spirit in which it’s intended
 -- a guide to make it easier to communicate and participate in the community.
 
-This code of conduct applies to all spaces managed by the ${project_name} project. This
+This code of conduct applies to all spaces managed by the new_cxx_project project. This
 includes chat systems, forums, emails (on lists or between members), issue
 trackers, events, and any other spaces that the community uses for
 communication. It applies to all of your communication and conduct in these
@@ -54,7 +54,7 @@ or even t-shirts you display in these spaces.
 All community members should help support our standards of acceptable behavior.
 Everyone is encouraged to speak up in response to any behavior that they deem
 inappropriate, threatening, offensive, or harmful. If you believe someone is
-violating the code of conduct, please report it to the ${project_name} leads.
+violating the code of conduct, please report it to the new_cxx_project leads.
 
 More detailed guidance on how to participate effectively in our community
 spaces:
@@ -87,7 +87,7 @@ spaces:
     a personal attack. It’s important to remember that a community where people
     feel threatened is not a productive one. Members of our community should be
     kind when dealing with other members as well as with people outside the
-    ${project_name} community.
+    new_cxx_project community.
 
 -   **Be careful in the words that we choose and be kind to others.** Do not use
     insults or put downs. Harassment and other exclusionary behaviors aren’t
@@ -105,7 +105,7 @@ spaces:
         being asked to stop is considered harassment.
 
 -   **When we disagree, we try to understand why.** Disagreements, both social
-    and technical, happen all the time, and ${project_name} is no exception. It is
+    and technical, happen all the time, and new_cxx_project is no exception. It is
     important that we resolve disagreements and differing views constructively.
     Remember that we’re different. The strength of the project comes from its
     varied community: people from a wide range of backgrounds. Different people
@@ -123,7 +123,7 @@ spaces:
     give a fresh perspective. Maybe meet over VC instead. Switching approaches
     can help resume progress.
 
-No weapons are allowed at ${project_name} events. Weapons include, but are not limited
+No weapons are allowed at new_cxx_project events. Weapons include, but are not limited
 to, explosives (including fireworks), guns, and large knives such as those used
 for hunting or display, as well as any other item used for the purpose of
 causing injury or harm to others.
@@ -142,7 +142,7 @@ issue could impact the community's safety, well-being, and inclusivity. It is
 our priority to remain a welcoming community to victims as well as groups
 subjected to systemic marginalization or underrepresentation.
 
-If you have questions, please feel free to contact a ${project_name} lead directly.
+If you have questions, please feel free to contact a new_cxx_project lead directly.
 
 (conduct-team)=
 ## Conduct team
@@ -150,11 +150,11 @@ If you have questions, please feel free to contact a ${project_name} lead direct
 (reporting-conduct)=
 ### Reporting conduct
 
-If you believe someone is violating the code of conduct, you can report it to a ${project_name}
+If you believe someone is violating the code of conduct, you can report it to a new_cxx_project
 lead, by contacting them directly.
 
 **All reports will be kept confidential**, and are only used by the conduct team
-to address conduct issues and keep the ${project_name} community safe and inclusive.
+to address conduct issues and keep the new_cxx_project community safe and inclusive.
 
 Please send reports concerning a member of the conduct team directly to other
 members of the conduct team. This allows discussion of the complaint to more
@@ -229,18 +229,18 @@ taking. We will take into account feedback from the individuals involved on the
 appropriateness of our response, but we don’t guarantee we’ll act on it.
 
 After any incident, the conduct team will make a report on the situation to the
-${project_name} leads. The ${project_name} leads may choose to make a public statement about the
+new_cxx_project leads. The new_cxx_project leads may choose to make a public statement about the
 incident. If that’s the case, the identities of anyone involved will remain
 confidential unless instructed otherwise by those individuals.
 
 ### Appealing
 
 Only permanent resolutions, such as bans, or requests for public actions may be
-appealed. To appeal a decision of the conduct team, contact the ${project_name}
+appealed. To appeal a decision of the conduct team, contact the new_cxx_project
 leads with your appeal and they will review the case.
 
 In general, it is **not** appropriate to appeal a particular decision in public
-areas of ${remote} or Discord. Doing so would involve disclosure of information
+areas of GitHub or Discord. Doing so would involve disclosure of information
 which should remain confidential. Disclosing this kind of information publicly
 may be considered a separate and, potentially, more serious violation of the
 Code of Conduct. This is not meant to limit discussion of the Code of Conduct,
@@ -251,7 +251,7 @@ explicit permission of all parties involved.
 (special-cases)=
 ### Special cases
 
-If a complaint is raised against a member of the conduct team or ${project_name} leads,
+If a complaint is raised against a member of the conduct team or new_cxx_project leads,
 they will be excluded from conduct discussion and decisions, including appeals.
 They will only be included as needed for an involved party, such as to get their
 perspective or to notify them of decisions. Such complaints may lead to a
@@ -286,14 +286,14 @@ involved:
     -   **Behavior:** A serious violation of the code of conduct, including
         sustained inappropriate behavior.
     -   **Action:** In addition to the warning action, a temporary ban from use
-        of ${project_name}'s community spaces for a specified period of time. External
+        of new_cxx_project's community spaces for a specified period of time. External
         channels, such as social media, should not be used to bypass these
         restrictions during the temporary ban. Violating these terms may lead to
         a permanent ban.
 1.  **Permanent ban**
     -   **Behavior:** Demonstrating a pattern of violation of the code of
         conduct.
-    -   **Action:** A permanent ban from use of ${project_name}'s community spaces.
+    -   **Action:** A permanent ban from use of new_cxx_project's community spaces.
 
 ## Acknowledgements
 
