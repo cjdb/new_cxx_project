@@ -10,6 +10,8 @@ Welcome to new_cxx_project! This is a project template generator for C++ project
 purpose is to reduce the amount of boilerplate that you need to interact with in order to get started
 with your project.
 
+You can read a better version of the docs at https://new-cxx-project.readthedocs.io.
+
 ```{toctree}
 :maxdepth: 1
 
