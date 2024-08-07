@@ -42,6 +42,9 @@ config.test_exec_root = os.path.join(config.clang_obj_root, 'test')
 llvm_config.use_default_substitutions()
 llvm_config.use_clang()
 
+config.environment["PATH"] = (
+    f"{os.path.expanduser('~')}/.config/new_cxx_project/bin:{config.environment['PATH']}"
+)
 config.substitutions.append(('%PATH%', config.environment['PATH']))
 
 homedir = tempfile.TemporaryDirectory()

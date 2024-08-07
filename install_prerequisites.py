@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+from pathlib import Path
 import platform
 import subprocess
 import sys
@@ -8,15 +9,13 @@ import venv
 
 class PackageManager:
     def __init__(self):
-        self.venv_path = f"{os.path.expanduser('~')}/.new_cxx_project"
+        config = f"{os.path.expanduser('~')}/.config"
+        if not Path(config).exists():
+            os.makedirs(config)
+        self.venv_path = f"{config}/new_cxx_project"
         self.pip = f"{self.venv_path}/bin/pip"
 
-    def pip_fallback(self, prefix):
-        print(
-            f"{prefix}, will use python-pip as a fallback. Creating a virtual environment in '{self.venv_path}', and will install as many packages as possible there using Pip. You will need to add '{self.venv_path}/bin' to your PATH before running new_cxx_project.py.",
-            file=sys.stderr,
-        )
-
+    def install_python_packages(self):
         venv.create(
             self.venv_path,
             system_site_packages=True,
@@ -27,7 +26,12 @@ class PackageManager:
         )
 
         subprocess.run(
-            [self.pip, "install", "GitPython", "myst-parser", "psutil", "sphinx"]
+            [
+                self.pip,
+                "install",
+                "-r",
+                f"{Path(__file__).resolve().parent}/docs/requirements.txt",
+            ]
         ).check_returncode()
 
         print(
@@ -36,12 +40,18 @@ class PackageManager:
         )
 
     def install_prerequisites(self):
-        self.pip_fallback("No supported package managers were detected")
-        subprocess.run(
-            [self.pip, "install", "cmake", "libcurl", "ninja"]
-        ).check_returncode()
+        self.install_python_packages()
         print(
-            f"\033[1m\033[91mYou will need to add '{self.venv_path}/bin' to your PATH before running new_cxx_project.py\033[0m",
+            "No supported package managers were detected, only the Python packages were installed. Please manually install the following packages:\n"
+            "git\n"
+            "curl\n"
+            "cmake\n"
+            "libz3\n"
+            "ninja\n"
+            "pkgconf\n"
+            "tar\n"
+            "unzip\n"
+            "zip\n",
             file=sys.stderr,
         )
 
@@ -59,15 +69,13 @@ class Apt(PackageManager):
                 "libz3-dev",
                 "ninja-build",
                 "pkg-config",
-                "python3-git",
-                "python3-myst-parser",
-                "python3-psutil",
-                "python3-sphinx",
                 "tar",
                 "unzip",
                 "zip",
             ]
         ).check_returncode()
+
+        self.install_python_packages()
 
 
 class Pacman(PackageManager):
@@ -82,14 +90,12 @@ class Pacman(PackageManager):
                 "git",
                 "ninja",
                 "pkgconf",
-                "python-gitpython",
-                "python-myst-parser",
-                "python-psutil",
-                "python-sphinx",
                 "zip",
                 "unzip",
             ]
         ).check_returncode()
+
+        self.install_python_packages()
 
 
 class DNF(PackageManager):
@@ -102,20 +108,19 @@ class DNF(PackageManager):
                 "automake",
                 "gcc",
                 "gcc-c++",
+                "git",
                 "kernel-devel",
                 "cmake",
                 "curl",
                 "ninja-build",
                 "pkgconf",
-                "python3-GitPython",
-                "python3-myst-parser",
-                "python3-psutil",
-                "python3-sphinx",
                 "tar",
                 "unzip",
                 "zip",
             ]
         ).check_returncode()
+
+        self.install_python_packages()
 
 
 class ZYpp(PackageManager):
@@ -127,18 +132,17 @@ class ZYpp(PackageManager):
                 "cmake",
                 "curl",
                 "gcc-c++",
+                "git",
                 "ninja",
                 "patterns-devel-base-devel_basis",
                 "pkgconf",
-                "python311-GitPython",
-                "python3-myst-parser",
-                "python3-psutil",
-                "python3-Sphinx",
                 "tar",
                 "unzip",
                 "zip",
             ]
         ).check_returncode()
+
+        self.install_python_packages()
 
 
 class Brew(PackageManager):
@@ -155,7 +159,7 @@ class Brew(PackageManager):
             ]
         ).check_returncode()
 
-        self.pip_fallback("Homebrew doesn't manage Python packages")
+        self.install_python_packages()
 
 
 class UnsupportedPlatform(Exception):
