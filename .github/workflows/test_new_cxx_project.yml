@@ -36,7 +36,7 @@ jobs:
           sudo apt-get install -y software-properties-common
           sudo add-apt-repository universe
           sudo apt-get update
-          sudo apt-get install -y gcc-14 g++-14 wget lsb-release
+          sudo apt-get install -y gcc-14 g++-14 wget lsb-release python3-venv
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
           sudo apt-get remove -y '*clang*' '*llvm*'
           sudo apt-get autoremove -y
@@ -76,6 +76,7 @@ jobs:
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-14 100
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-14 100
+          echo "${HOME}/.config/new_cxx_project/bin" >> ${GITHUB_PATH}
 
       - name: Configure
         id: configure

@@ -83,7 +83,7 @@ files that ship with the project by default.
 1. This project is fairly straightforward to use. Most projects can probably get away with running the
 following:
   ```sh
-  $ ./new_cxx_project.py /tmp/hello_world --author='Your name'
+  $ ${HOME}/.config/new_cxx_project/python new_cxx_project.py /tmp/hello_world --author='Your name'
   ```
   This generates a project called `hello_world` in `/tmp/hello_world`.
 2. Create a file called `/tmp/hello_world/source/hello.cpp`:
@@ -107,12 +107,14 @@ following:
   ```sh
   # If you have the LLVM toolchain installed (Clang, libc++, and friends)
   $ cmake -GNinja -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="$PWD/config/cmake/toolchains/x86_64-linux-unknown-llvm.cmake"
+  ```
+  ```sh
   # If you have the GNU toolchain installed (GCC and friends)
   $ cmake -GNinja -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="$PWD/config/cmake/toolchains/x86_64-linux-unknown-gnu.cmake"
   ```
-. Now run `ninja -C build`.
-6. Finally, run `build/source/hello`. You should see `Hello, world!` output to screen.
-7. Congrats! That's your first project done :)
+6. Now run `ninja -C build`.
+7. Finally, run `build/source/hello`. You should see `Hello, world!` output to screen.
+8. Congrats! That's your first project done :)
 
 ## Options
 
