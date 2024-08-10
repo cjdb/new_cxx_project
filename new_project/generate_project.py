@@ -165,13 +165,14 @@ def generate_repo(project_name: str, path: Path, remote: str,
     if package_manager == 'vcpkg':
         if not package_manager_remote:
             package_manager_remote = 'https://github.com/Microsoft/vcpkg.git'
-        vcpkg = Submodule.add(repo,
-                              'vcpkg',
-                              path=f'{path}/vcpkg',
-                              url=package_manager_remote)
+        vcpkg = Submodule.add(
+            repo=repo, name="vcpkg", path=f"{path}/vcpkg", url=package_manager_remote
+        )
         vcpkg.update(recursive=True, init=True, to_latest_revision=True)
 
-    repo.index.add(os.listdir(path))
+    add = os.listdir(path)
+    add.remove(".git")
+    repo.index.add(add)
     repo.index.commit(
         'initial commit\n\nThis commit was generated using https://github.com/cjdb/new_cxx_project.'
     )
