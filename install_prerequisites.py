@@ -60,6 +60,7 @@ class Apt(PackageManager):
     def install_prerequisites(self):
         subprocess.run(
             [
+                "sudo",
                 "apt-get",
                 "install",
                 "build-essential",
@@ -82,6 +83,7 @@ class Pacman(PackageManager):
     def install_prerequisites(self):
         subprocess.run(
             [
+                "sudo",
                 "pacman",
                 "-S",
                 "base-devel",
@@ -102,6 +104,7 @@ class DNF(PackageManager):
     def install_prerequisites(self):
         subprocess.run(
             [
+                "sudo",
                 "dnf",
                 "install",
                 "make",
@@ -127,6 +130,7 @@ class ZYpp(PackageManager):
     def install_prerequisites(self):
         subprocess.run(
             [
+                "sudo",
                 "zypper",
                 "install",
                 "cmake",

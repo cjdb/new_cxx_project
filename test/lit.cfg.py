@@ -50,5 +50,7 @@ config.substitutions.append(('%PATH%', config.environment['PATH']))
 homedir = tempfile.TemporaryDirectory()
 config.environment['HOME'] = homedir.name
 
+config.environment['TRUE_HOME'] = os.path.expanduser('~')
+
 tool_dirs = []
 tools = []

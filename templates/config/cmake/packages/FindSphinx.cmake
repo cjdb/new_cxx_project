@@ -10,22 +10,25 @@ if(NOT ${PROJECT_NAME}_BUILD_DOCS)
   return()
 endif()
 
+if(NOT Python3_ROOT_DIR)
+  set(Python3_ROOT_DIR "$$ENV{HOME}/.config/new_cxx_project/")
+endif()
 find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
 if(Python3_FOUND)
-  get_filename_component(_PYTHON_DIR "$${Python3_EXECUTABLE}" DIRECTORY)
+  get_filename_component(_Python3_DIR "$${Python3_EXECUTABLE}" DIRECTORY)
   set(
     _Python3_PATHS
-    "$${_Python3_DIR}"
-    "$${_Python3_DIR}/bin"
-    "$${_Python3_DIR}/Scripts"
+    "$${_Python3_DIR}/.."
+    "$${_Python3_DIR}/../bin"
+    "$${_Python3_DIR}/../Scripts"
   )
 endif()
 
 find_program(
   SPHINX_EXECUTABLE
   NAMES sphinx-build sphinx-build.exe
-  HINTS "$${_Python3_PATHS}"
+  HINTS $${_Python3_PATHS}
 )
 mark_as_advanced(SPHINX_EXECUTABLE)
 
