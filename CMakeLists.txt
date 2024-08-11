@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.28)
 project(test_project_template)
 
-find_package(Python REQUIRED COMPONENTS Interpreter)
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
 find_package(Clang REQUIRED)
 
 function(make_paths_relative out_pathlist basedir pathlist)

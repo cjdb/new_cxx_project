@@ -51,8 +51,7 @@ jobs:
              apt-get install -y software-properties-common &&
              apt-get install -y gcc g++ wget lsb-release python3-venv &&
              yes | ./install_prerequisites.py &&
-             export PATH="${HOME}/.config/new_cxx_project/bin:${PATH}" &&
-             python new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git /tmp/test &&
+             "${HOME}/.config/new_cxx_project/bin/python" new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git /tmp/test &&
              cmake -GNinja -S/tmp/test -B/tmp/build -DCMAKE_BUILD_TYPE=Debug &&
              ninja -C /tmp/build'
       - name: Test pacman
@@ -62,8 +61,7 @@ jobs:
           sudo docker run --network=host -t -v $PWD:$HOME -w $HOME --rm archlinux bash -c
             'yes | pacman -Syu python3 &&
              yes | ./install_prerequisites.py &&
-             export PATH="${HOME}/.config/new_cxx_project/bin:${PATH}" &&
-             python new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git /tmp/test &&
+             "${HOME}/.config/new_cxx_project/bin/python" new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git /tmp/test &&
              cmake -GNinja -S/tmp/test -B/tmp/build -DCMAKE_BUILD_TYPE=Debug &&
              ninja -C /tmp/build'
       - name: Test dnf
@@ -73,8 +71,7 @@ jobs:
           sudo docker run --network=host -t -v $PWD:$HOME -w $HOME --rm fedora bash -c
             'yes | dnf update &&
              yes | ./install_prerequisites.py &&
-             export PATH="${HOME}/.config/new_cxx_project/bin:${PATH}" &&
-             python new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git /tmp/test &&
+             "${HOME}/.config/new_cxx_project/bin/python" new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git /tmp/test &&
              cmake -GNinja -S/tmp/test -B/tmp/build -DCMAKE_BUILD_TYPE=Debug &&
              ninja -C /tmp/build'
       - name: Test Homebrew
@@ -82,7 +79,6 @@ jobs:
         if: matrix.os == 'macos-14'
         run: |
           ./install_prerequisites.py
-          export PATH="${HOME}/.config/new_cxx_project/bin:${PATH}" &&
-          python new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git $HOME/test
+          "${HOME}/.config/new_cxx_project/bin/python" new_cxx_project.py --author new_cxx_project --package-manager=vcpkg --remote=https://github.com/new_cxx_project/test.git $HOME/test
           cmake -GNinja -S $HOME/test -B $HOME/test/build -DCMAKE_BUILD_TYPE=Debug
           ninja -C $HOME/test/build
