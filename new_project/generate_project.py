@@ -16,6 +16,9 @@ import sys
 
 def generate(path: Path, author: str, remote: str, package_manager: str,
              package_manager_remote: str):
+    if not os.path.isabs(path):
+        path = path.absolute()
+
     project_name = path.name.replace('-', '_')
 
     # FIXME: learn how to support UTF-8 and support valid UTF-8 project names too.
@@ -26,7 +29,8 @@ def generate(path: Path, author: str, remote: str, package_manager: str,
 
     if Path.exists(path):
         diagnostics.report_error(
-            f''''{path}' already exists, aborting to avoid overwriting its contents...'''
+            f"""'{path}' already exists, aborting to avoid overwriting its contents...""",
+            fatal=True,
         )
 
     generate_cmake(project_name=project_name,
