@@ -172,6 +172,7 @@ def generate_repo(project_name: str, path: Path, remote: str,
 
     add = os.listdir(path)
     add.remove(".git")
+    add.remove("vcpkg")
     repo.index.add(add)
     repo.index.commit(
         'initial commit\n\nThis commit was generated using https://github.com/cjdb/new_cxx_project.'
